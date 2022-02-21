@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 const Register = () => {
+  const supportedFormats = ["image/jpg", "image/jpeg", "image/png"];
   const validationSchema = yup.object({
     username: yup
       .string("Enter your username.")
@@ -18,10 +19,17 @@ const Register = () => {
       .string("Enter your password.")
       .min(6, "Password should be at least 6 characters long!")
       .required("Password is required!"),
-    confirmPassword: yup
+    passwordConfirm: yup
       .string("Confirm password")
       .oneOf([yup.ref("password"), null], "Passwords must match!")
       .required("Password is required!"),
+    avatar: yup
+      .mixed("Enter picture")
+      .required("Image file is required!")
+      .test("fileType", "Only jpg/jpeg/png files are supported!", value =>
+        supportedFormats.includes(value.type)
+      )
+      .test("fileSize", "File is too large", value => value.size < 1_000_000),
   });
 
   const formik = useFormik({
@@ -29,7 +37,8 @@ const Register = () => {
       username: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      passwordConfirm: "",
+      avatar: 0,
     },
     validationSchema: validationSchema,
     onSubmit: values => {
@@ -70,21 +79,31 @@ const Register = () => {
           helperText={formik.touched.password && formik.errors.password}
         />
         <TextField
-          id="confirmPassword"
-          name="confirmPassword"
-          label="Confirm Password"
+          id="passwordConfirm"
+          name="passwordConfirm"
+          label="Confirm password"
           type="password"
-          value={formik.values.confirmPassword}
+          value={formik.values.passwordConfirm}
           onChange={formik.handleChange}
           error={
-            formik.touched.confirmPassword &&
-            Boolean(formik.errors.confirmPassword)
+            formik.touched.passwordConfirm &&
+            Boolean(formik.errors.passwordConfirm)
           }
           helperText={
-            formik.touched.confirmPassword && formik.errors.confirmPassword
+            formik.touched.passwordConfirm && formik.errors.passwordConfirm
           }
         />
-        <Button color="primary" variant="contained" type="submit">
+        <TextField
+          id="avatar"
+          name="avatar"
+          type="file"
+          onChange={e => {
+            formik.values.avatar = e.target.files[0];
+          }}
+          error={formik.touched.avatar && Boolean(formik.errors.avatar)}
+          helperText={formik.touched.avatar && formik.errors.avatar}
+        />
+        <Button variant="contained" type="submit" size="small">
           Submit
         </Button>
       </form>
