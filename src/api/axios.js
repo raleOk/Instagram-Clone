@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const baseURL = "https://starfish-y8ps9.herokuapp.com/api/auth/";
-const routes = ["register", "login", "verify", "forgot", "reset"];
 const token = "placeholder";
 
 const axiosInstance = axios.create({
@@ -22,7 +21,17 @@ const register = async data => {
       "Content-Type": "multipart/form-data",
     },
   };
-  axiosInstance.post(routes[0], formData, config);
+  axiosInstance.post("register", formData, config);
 };
 
-export { register };
+const verify = async data => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  axiosInstance.post("verify", data, config);
+};
+
+export { register, verify };

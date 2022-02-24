@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Grid, Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -7,6 +7,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import { register } from "../api/axios";
 
 const Register = () => {
+  const navigate = useNavigate();
   const supportedFormats = ["image/jpg", "image/jpeg", "image/png", undefined];
   const validationSchema = yup.object({
     username: yup
@@ -59,6 +60,8 @@ const Register = () => {
     validationSchema: validationSchema,
     onSubmit: values => {
       register(values);
+      localStorage.setItem("userEmail", JSON.stringify(values.email));
+      navigate("/verify");
     },
   });
 
