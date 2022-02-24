@@ -4,6 +4,7 @@ import { Grid, Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import { register } from "../api/axios";
 
 const Register = () => {
   const supportedFormats = ["image/jpg", "image/jpeg", "image/png", undefined];
@@ -57,7 +58,7 @@ const Register = () => {
     },
     validationSchema: validationSchema,
     onSubmit: values => {
-      console.log(values);
+      register(values);
     },
   });
 
