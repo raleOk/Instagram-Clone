@@ -57,7 +57,7 @@ const Register = () => {
       passwordConfirm: "",
       avatar: 0,
     },
-    validationSchema: validationSchema,
+    validationSchema,
     onSubmit: values => {
       register(values);
       localStorage.setItem("userEmail", JSON.stringify(values.email));

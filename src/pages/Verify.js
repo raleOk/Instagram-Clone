@@ -1,12 +1,17 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Grid, Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import { verify } from "../api/axios";
+import { verify, resend } from "../api/axios";
+import { authContext } from "../auth/useAuth";
 
 const Verify = () => {
+  const navigate = useNavigate();
+  const userEmail = JSON.parse(localStorage.getItem("userEmail"));
+  const { authLogin } = useContext(authContext);
+
   const validationSchema = yup.object({
     token: yup
       .string()
@@ -21,11 +26,25 @@ const Verify = () => {
       token: 0,
     },
     validationSchema,
-    onSubmit: values => {
-      values.email = JSON.parse(localStorage.getItem("userEmail"));
-      verify(values);
+    onSubmit: async values => {
+      try {
+        values.email = userEmail;
+        const response = await verify(values);
+        const data = await response.data;
+        const token = data.token;
+
+        localStorage.setItem("token", JSON.stringify(token));
+        authLogin();
+        navigate("/");
+      } catch (err) {
+        console.log(err);
+      }
     },
   });
+
+  const resendHandler = () => {
+    resend({ email: userEmail });
+  };
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -52,7 +71,9 @@ const Verify = () => {
           />
         </Grid>
         <Grid item>
-          <Link to={"/verify"}>Didn't get the email? Send again.</Link>
+          <Link to={"/verify"} onClick={resendHandler}>
+            Didn't get the email? Send again.
+          </Link>
         </Grid>
         <Grid item>
           <Button type="submit" variant="outlined" size="small">
