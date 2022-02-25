@@ -1,4 +1,4 @@
-# Instagram Clone
+# Starfish
 
 ## Description
 
