@@ -1,12 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Grid, Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import { login } from "../api/axios";
+import { authContext } from "../auth/useAuth";
 
 const Login = () => {
+  const { authLogin } = useContext(authContext);
+  const navigate = useNavigate();
+
   const validationSchema = yup.object({
     email: yup
       .string("Enter you email")
@@ -33,8 +37,19 @@ const Login = () => {
       password: "",
     },
     validationSchema,
-    onSubmit: values => {
-      console.log(values);
+    onSubmit: async values => {
+      try {
+        const response = await login(values);
+        const data = await response.data;
+        const token = data.token;
+
+        localStorage.setItem("token", JSON.stringify(token));
+        localStorage.setItem("userEmail", JSON.stringify(values.email));
+        authLogin();
+        navigate("/");
+      } catch (err) {
+        console.log(err);
+      }
     },
   });
 
@@ -50,7 +65,6 @@ const Login = () => {
         <Grid item>
           <InstagramIcon />
         </Grid>
-
         <Grid item>
           <TextField
             id="email"
@@ -74,7 +88,6 @@ const Login = () => {
             helperText={formik.touched.password && formik.errors.password}
           />
         </Grid>
-
         <Grid item>
           <Button variant="outlined" type="submit" size="small">
             Login

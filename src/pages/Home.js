@@ -1,8 +1,18 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Typography, Button } from "@mui/material";
+import { authContext } from "../auth/useAuth";
 
 const Home = () => {
-  return <Link to={"/register"}>Home</Link>;
+  const { authLogout } = useContext(authContext);
+
+  return (
+    <>
+      <Typography>Welcome!</Typography>
+      <Button type="button" onClick={authLogout}>
+        Logout
+      </Button>
+    </>
+  );
 };
 
 export default Home;
