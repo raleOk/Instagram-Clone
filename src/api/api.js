@@ -1,12 +1,12 @@
 import axios from "axios";
 
 const baseURL = "https://starfish-y8ps9.herokuapp.com/api/auth/";
-const routes = ["register", "login", "verify", "forgot", "reset"];
-const token = "placeholder";
+const token = JSON.parse(localStorage.getItem("token"));
 
 const axiosInstance = axios.create({
   baseURL,
   headers: {
+    "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
   },
 });
@@ -22,7 +22,19 @@ const register = async data => {
       "Content-Type": "multipart/form-data",
     },
   };
-  axiosInstance.post(routes[0], formData, config);
+  return axiosInstance.post("register", formData, config);
 };
 
-export { register };
+const login = async data => {
+  return axiosInstance.post("login", data);
+};
+
+const verify = async data => {
+  return axiosInstance.post("verify", data);
+};
+
+const resend = async data => {
+  return axiosInstance.post("resend", data);
+};
+
+export { register, login, verify, resend };

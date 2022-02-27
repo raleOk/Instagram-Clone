@@ -1,18 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Grid, Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import { register } from "../api/axios";
+import logo from "../images/logo.png";
+import { register } from "../api/api";
 
 const Register = () => {
+  const navigate = useNavigate();
   const supportedFormats = ["image/jpg", "image/jpeg", "image/png", undefined];
   const validationSchema = yup.object({
     username: yup
       .string("Enter your username.")
-      .min(3, "Username must be 3-20 characters long!")
-      .max(20, "Username must be 3-20 characters long!")
+      .min(6, "Username must be 6-20 characters long!")
+      .max(20, "Username must be 6-20 characters long!")
       .matches(/^[A-Za-z0-9 ]+$/, "No special characters allowed!")
       .required("Username is required!"),
     email: yup
@@ -56,99 +57,120 @@ const Register = () => {
       passwordConfirm: "",
       avatar: 0,
     },
-    validationSchema: validationSchema,
-    onSubmit: values => {
-      register(values);
+    validationSchema,
+    onSubmit: async values => {
+      try {
+        await register(values);
+        localStorage.setItem("userEmail", JSON.stringify(values.email));
+        navigate("/verify");
+      } catch (err) {
+        console.log(err);
+      }
     },
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        spacing={3}
-      >
-        <Grid item>
-          <InstagramIcon />
-        </Grid>
-        <Grid item>
-          <TextField
-            id="username"
-            name="username"
-            label="Username"
-            variant="outlined"
-            value={formik.values.username}
-            onChange={formik.handleChange}
-            error={formik.touched.username && Boolean(formik.errors.username)}
-            helperText={formik.touched.username && formik.errors.username}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            id="email"
-            name="email"
-            label="Email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            id="passwordConfirm"
-            name="passwordConfirm"
-            label="Confirm password"
-            type="password"
-            value={formik.values.passwordConfirm}
-            onChange={formik.handleChange}
-            error={
-              formik.touched.passwordConfirm &&
-              Boolean(formik.errors.passwordConfirm)
-            }
-            helperText={
-              formik.touched.passwordConfirm && formik.errors.passwordConfirm
-            }
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            id="avatar"
-            name="avatar"
-            type="file"
-            variant="standard"
-            onChange={e => {
-              formik.values.avatar = e.target.files[0];
-            }}
-            error={formik.touched.avatar && Boolean(formik.errors.avatar)}
-            helperText={formik.touched.avatar && formik.errors.avatar}
-          />
-        </Grid>
-        <Grid item>
-          <Button variant="outlined" type="submit" size="small">
-            Register
-          </Button>
-        </Grid>
-        <Grid item>
-          <Link to={"/login"}>Already have an account? Log in!</Link>
-        </Grid>
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      spacing={3}
+    >
+      <Grid item>
+        <img src={logo} alt="logo" />
       </Grid>
-    </form>
+      <Grid item>
+        <form onSubmit={formik.handleSubmit}>
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
+          >
+            <Grid item>
+              <TextField
+                id="username"
+                name="username"
+                label="Username"
+                variant="outlined"
+                value={formik.values.username}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.username && Boolean(formik.errors.username)
+                }
+                helperText={formik.touched.username && formik.errors.username}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                id="email"
+                name="email"
+                label="Email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                id="password"
+                name="password"
+                label="Password"
+                type="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.password && Boolean(formik.errors.password)
+                }
+                helperText={formik.touched.password && formik.errors.password}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                id="passwordConfirm"
+                name="passwordConfirm"
+                label="Confirm password"
+                type="password"
+                value={formik.values.passwordConfirm}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.passwordConfirm &&
+                  Boolean(formik.errors.passwordConfirm)
+                }
+                helperText={
+                  formik.touched.passwordConfirm &&
+                  formik.errors.passwordConfirm
+                }
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                id="avatar"
+                name="avatar"
+                type="file"
+                variant="standard"
+                onChange={e => {
+                  formik.values.avatar = e.target.files[0];
+                }}
+                error={formik.touched.avatar && Boolean(formik.errors.avatar)}
+                helperText={formik.touched.avatar && formik.errors.avatar}
+              />
+            </Grid>
+            <Grid item>
+              <Button variant="outlined" type="submit" size="small">
+                Register
+              </Button>
+            </Grid>
+            <Grid item>
+              <Link to={"/login"}>Already have an account? Log in!</Link>
+            </Grid>
+          </Grid>
+        </form>
+      </Grid>
+    </Grid>
   );
 };
 
