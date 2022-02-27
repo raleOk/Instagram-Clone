@@ -8,10 +8,10 @@ import Home from "./pages/Home";
 import { authContext } from "./auth/useAuth";
 
 const App = () => {
-  const { authHandler } = useContext(authContext);
+  const { handleAuth } = useContext(authContext);
   useEffect(() => {
-    authHandler();
-  }, [authHandler]);
+    handleAuth();
+  }, [handleAuth]);
   return (
     <Routes>
       <Route path="/" element={<ProtectedRoutes />}>

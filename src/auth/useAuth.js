@@ -7,7 +7,7 @@ const useAuth = () => {
 
   return {
     auth,
-    authHandler() {
+    handleAuth() {
       const isLogged = localStorage.getItem("isLogged");
       switch (isLogged) {
         case "true":
@@ -34,10 +34,10 @@ const useAuth = () => {
 };
 
 const AuthProvider = props => {
-  const { auth, authHandler, authLogin, authLogout } = useAuth();
+  const { auth, handleAuth, authLogin, authLogout } = useAuth();
 
   return (
-    <authContext.Provider value={{ auth, authHandler, authLogin, authLogout }}>
+    <authContext.Provider value={{ auth, handleAuth, authLogin, authLogout }}>
       {props.children}
     </authContext.Provider>
   );
