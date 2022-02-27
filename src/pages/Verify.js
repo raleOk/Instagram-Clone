@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Grid, Button, TextField } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Grid, Button, TextField, Link, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import { verify, resend } from "../api/axios";
+import logo from "../images/logo.png";
+import { verify, resend } from "../api/api";
 import { authContext } from "../auth/useAuth";
 
 const Verify = () => {
@@ -42,46 +42,70 @@ const Verify = () => {
     },
   });
 
-  const resendHandler = () => {
+  const handleResend = () => {
     resend({ email: userEmail });
   };
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        spacing={3}
-      >
-        <Grid item>
-          <InstagramIcon />
-        </Grid>
-        <Grid item>
-          <TextField
-            id="token"
-            name="token"
-            label="Verification code"
-            type="number"
-            variant="outlined"
-            onChange={formik.handleChange}
-            error={formik.touched.token && Boolean(formik.errors.token)}
-            helperText={formik.touched.token && formik.errors.token}
-          />
-        </Grid>
-        <Grid item>
-          <Link to={"/verify"} onClick={resendHandler}>
-            Didn't get the email? Send again.
-          </Link>
-        </Grid>
-        <Grid item>
-          <Button type="submit" variant="outlined" size="small">
-            Verify
-          </Button>
-        </Grid>
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      spacing={3}
+    >
+      <Grid item>
+        <form onSubmit={formik.handleSubmit}>
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
+          >
+            <Grid item>
+              <img src={logo} alt="logo" />
+            </Grid>
+            <Grid item>
+              <Typography variant="body2">
+                Email with verification code has been sent to you.
+              </Typography>
+              <Typography variant="subtitle2">
+                Please enter the code below.
+              </Typography>
+            </Grid>
+            <Grid item>
+              <TextField
+                id="token"
+                name="token"
+                label="Verification code"
+                type="number"
+                variant="outlined"
+                onChange={formik.handleChange}
+                error={formik.touched.token && Boolean(formik.errors.token)}
+                helperText={formik.touched.token && formik.errors.token}
+              />
+            </Grid>
+            <Grid item>
+              <Link
+                component="button"
+                underline="always"
+                variant="body2"
+                type="button"
+                onClick={handleResend}
+              >
+                Didn't get the email? Send again.
+              </Link>
+            </Grid>
+            <Grid item>
+              <Button type="submit" variant="outlined" size="small">
+                Verify
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
       </Grid>
-    </form>
+    </Grid>
   );
 };
 

@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Grid, Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import { login } from "../api/axios";
+import logo from "../images/logo.png";
+import { login } from "../api/api";
 import { authContext } from "../auth/useAuth";
 
 const Login = () => {
@@ -56,50 +56,64 @@ const Login = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        spacing={3}
-      >
-        <Grid item>
-          <InstagramIcon />
-        </Grid>
-        <Grid item>
-          <TextField
-            id="email"
-            name="email"
-            label="Email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-          />
-        </Grid>
-        <Grid item>
-          <Button variant="outlined" type="submit" size="small">
-            Login
-          </Button>
-        </Grid>
-        <Grid item>
-          <Link to={"/register"}>Don't have an account? Register here.</Link>
-        </Grid>
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      spacing={3}
+    >
+      <Grid item>
+        <img src={logo} alt="logo" />
       </Grid>
-    </form>
+      <Grid item>
+        <form onSubmit={formik.handleSubmit}>
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
+          >
+            <Grid item>
+              <TextField
+                id="email"
+                name="email"
+                label="Email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                id="password"
+                name="password"
+                label="Password"
+                type="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.password && Boolean(formik.errors.password)
+                }
+                helperText={formik.touched.password && formik.errors.password}
+              />
+            </Grid>
+            <Grid item>
+              <Button variant="outlined" type="submit" size="small">
+                Login
+              </Button>
+            </Grid>
+            <Grid item>
+              <Link to={"/register"}>
+                Don't have an account? Register here.
+              </Link>
+            </Grid>
+          </Grid>
+        </form>
+      </Grid>
+    </Grid>
   );
 };
 
