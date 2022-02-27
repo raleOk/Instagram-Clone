@@ -10,6 +10,9 @@ import { authContext } from "../auth/useAuth";
 const Login = () => {
   const { authLogin } = useContext(authContext);
   const navigate = useNavigate();
+  const errorStyles = {
+    sx: { width: 180 },
+  };
 
   const validationSchema = yup.object({
     email: yup
@@ -84,6 +87,7 @@ const Login = () => {
                 onChange={formik.handleChange}
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
+                FormHelperTextProps={errorStyles}
               />
             </Grid>
             <Grid item>
@@ -98,6 +102,7 @@ const Login = () => {
                   formik.touched.password && Boolean(formik.errors.password)
                 }
                 helperText={formik.touched.password && formik.errors.password}
+                FormHelperTextProps={errorStyles}
               />
             </Grid>
             <Grid item>

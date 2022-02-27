@@ -8,6 +8,10 @@ import { register } from "../api/api";
 
 const Register = () => {
   const navigate = useNavigate();
+  const errorStyles = {
+    sx: { width: 180 },
+  };
+
   const supportedFormats = ["image/jpg", "image/jpeg", "image/png", undefined];
   const validationSchema = yup.object({
     username: yup
@@ -101,6 +105,7 @@ const Register = () => {
                   formik.touched.username && Boolean(formik.errors.username)
                 }
                 helperText={formik.touched.username && formik.errors.username}
+                FormHelperTextProps={errorStyles}
               />
             </Grid>
             <Grid item>
@@ -112,6 +117,7 @@ const Register = () => {
                 onChange={formik.handleChange}
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
+                FormHelperTextProps={errorStyles}
               />
             </Grid>
             <Grid item>
@@ -126,6 +132,7 @@ const Register = () => {
                   formik.touched.password && Boolean(formik.errors.password)
                 }
                 helperText={formik.touched.password && formik.errors.password}
+                FormHelperTextProps={errorStyles}
               />
             </Grid>
             <Grid item>
@@ -144,6 +151,7 @@ const Register = () => {
                   formik.touched.passwordConfirm &&
                   formik.errors.passwordConfirm
                 }
+                FormHelperTextProps={errorStyles}
               />
             </Grid>
             <Grid item>
@@ -157,6 +165,7 @@ const Register = () => {
                 }}
                 error={formik.touched.avatar && Boolean(formik.errors.avatar)}
                 helperText={formik.touched.avatar && formik.errors.avatar}
+                FormHelperTextProps={errorStyles}
               />
             </Grid>
             <Grid item>

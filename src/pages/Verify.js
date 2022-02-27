@@ -8,9 +8,12 @@ import { verify, resend } from "../api/api";
 import { authContext } from "../auth/useAuth";
 
 const Verify = () => {
+  const { authLogin } = useContext(authContext);
   const navigate = useNavigate();
   const userEmail = JSON.parse(localStorage.getItem("userEmail"));
-  const { authLogin } = useContext(authContext);
+  const errorStyles = {
+    sx: { width: 180 },
+  };
 
   const validationSchema = yup.object({
     token: yup
@@ -67,11 +70,9 @@ const Verify = () => {
               <img src={logo} alt="logo" />
             </Grid>
             <Grid item>
-              <Typography variant="body2">
-                Email with verification code has been sent to you.
-              </Typography>
               <Typography variant="subtitle2">
-                Please enter the code below.
+                Email with verification code has been sent to you. Please enter
+                the code below.
               </Typography>
             </Grid>
             <Grid item>
@@ -84,6 +85,7 @@ const Verify = () => {
                 onChange={formik.handleChange}
                 error={formik.touched.token && Boolean(formik.errors.token)}
                 helperText={formik.touched.token && formik.errors.token}
+                FormHelperTextProps={errorStyles}
               />
             </Grid>
             <Grid item>
