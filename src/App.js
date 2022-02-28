@@ -4,6 +4,8 @@ import ProtectedRoutes from "./auth/ProtectedRoutes";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Verify from "./pages/Verify";
+import Forgot from "./pages/Forgot";
+import Reset from "./pages/Reset";
 import Home from "./pages/Home";
 import { authContext } from "./auth/useAuth";
 
@@ -20,6 +22,8 @@ const App = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/verify" element={<Verify />} />
+      <Route path="/forgot" element={<Forgot />} />
+      <Route path="/reset" element={<Reset />} />
     </Routes>
   );
 };

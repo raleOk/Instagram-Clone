@@ -106,6 +106,9 @@ const Login = () => {
               />
             </Grid>
             <Grid item>
+              <Link to={"/forgot"}>Forgot password?</Link>
+            </Grid>
+            <Grid item>
               <Button variant="outlined" type="submit" size="small">
                 Login
               </Button>
