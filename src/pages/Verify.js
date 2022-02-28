@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Grid, Button, TextField, Link, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -10,6 +10,7 @@ import { authContext } from "../auth/useAuth";
 const Verify = () => {
   const { authLogin } = useContext(authContext);
   const navigate = useNavigate();
+  const location = useLocation();
   const userEmail = JSON.parse(localStorage.getItem("userEmail"));
   const errorStyles = {
     sx: { width: 180 },
@@ -30,17 +31,31 @@ const Verify = () => {
     },
     validationSchema,
     onSubmit: async values => {
-      try {
-        values.email = userEmail;
-        const response = await verify(values);
-        const data = await response.data;
-        const token = data.token;
+      if (location.state === null) {
+        try {
+          values.email = userEmail;
+          const response = await verify(values);
+          const data = await response.data;
+          const token = data.token;
 
-        localStorage.setItem("token", JSON.stringify(token));
-        authLogin();
-        navigate("/");
-      } catch (err) {
-        console.log(err);
+          authLogin();
+          localStorage.setItem("token", JSON.stringify(token));
+          navigate("/");
+          return;
+        } catch (err) {
+          console.log(err);
+          return;
+        }
+      }
+
+      if (location.state.from === "/forgot") {
+        try {
+          values.email = location.state.email;
+          await verify(values);
+          navigate("/reset");
+        } catch (err) {
+          console.log(err);
+        }
       }
     },
   });
@@ -48,7 +63,6 @@ const Verify = () => {
   const handleResend = () => {
     resend({ email: userEmail });
   };
-
   return (
     <Grid
       container
