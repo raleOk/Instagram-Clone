@@ -35,8 +35,7 @@ const Verify = () => {
         try {
           values.email = userEmail;
           const response = await verify(values);
-          const data = await response.data;
-          const token = data.token;
+          const token = await response.data.token;
 
           authLogin();
           localStorage.setItem("token", JSON.stringify(token));
@@ -51,7 +50,10 @@ const Verify = () => {
       if (location.state.from === "/forgot") {
         try {
           values.email = location.state.email;
-          await verify(values);
+          const response = await verify(values);
+          const token = await response.data.token;
+
+          localStorage.setItem("token", JSON.stringify(token));
           navigate("/reset");
         } catch (err) {
           console.log(err);
