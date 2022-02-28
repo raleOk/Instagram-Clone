@@ -41,4 +41,8 @@ const forgot = async data => {
   return axiosInstance.post("forgot", data);
 };
 
-export { register, login, verify, resend, forgot };
+const reset = async data => {
+  return axiosInstance.post("reset", data);
+};
+
+export { register, login, verify, resend, forgot, reset };
