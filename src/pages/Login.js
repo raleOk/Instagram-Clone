@@ -52,6 +52,7 @@ const Login = () => {
         navigate("/");
       } catch (err) {
         if (err.response.status === 401) {
+          localStorage.setItem("userEmail", JSON.stringify(values.email));
           navigate("/verify");
         }
       }
