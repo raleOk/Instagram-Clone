@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Grid, Button, TextField } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Grid, Button, TextField, Link } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import logo from "../images/logo.png";
@@ -106,7 +106,9 @@ const Login = () => {
               />
             </Grid>
             <Grid item>
-              <Link to={"/forgot"}>Forgot password?</Link>
+              <Link underline="always" variant="body2" href="/forgot">
+                Forgot password?
+              </Link>
             </Grid>
             <Grid item>
               <Button variant="outlined" type="submit" size="small">
@@ -114,7 +116,7 @@ const Login = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Link to={"/register"}>
+              <Link underline="always" variant="body2" href="/register">
                 Don't have an account? Register here.
               </Link>
             </Grid>

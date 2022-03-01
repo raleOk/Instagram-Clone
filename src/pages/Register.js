@@ -1,6 +1,6 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Grid, Button, TextField } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Grid, Button, TextField, Link } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import logo from "../images/logo.png";
@@ -174,7 +174,9 @@ const Register = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Link to={"/login"}>Already have an account? Log in!</Link>
+              <Link underline="always" variant="body2" href="/login">
+                Already have an account? Log in!
+              </Link>
             </Grid>
           </Grid>
         </form>
