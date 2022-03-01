@@ -1,6 +1,14 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Grid, Button, TextField, Link, Typography } from "@mui/material";
+import {
+  Grid,
+  Button,
+  TextField,
+  Link,
+  Typography,
+  Alert,
+  Snackbar,
+} from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import logo from "../images/logo.png";
@@ -16,18 +24,22 @@ const Verify = () => {
     sx: { width: 180 },
   };
 
+  const [openMessage, setOpenMessage] = useState(false);
+  const [openErr, setOpenErr] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
+
   const validationSchema = yup.object({
     token: yup
       .string()
       .test("len", "Verificaiton code must be 4 characters long.", value => {
-        return value.length === 4;
+        return value.length === 4 || undefined;
       })
       .required("Please enter verification code."),
   });
 
   const formik = useFormik({
     initialValues: {
-      token: 0,
+      token: Number(""),
     },
     validationSchema,
     onSubmit: async values => {
@@ -42,7 +54,13 @@ const Verify = () => {
           navigate("/");
           return;
         } catch (err) {
-          console.log(err);
+          if (err.response.data.errors === undefined) {
+            setErrMessage(err.response.data.message);
+            setOpenErr(true);
+          } else {
+            setErrMessage(err.response.data.errors.email);
+            setOpenErr(true);
+          }
           return;
         }
       }
@@ -56,14 +74,41 @@ const Verify = () => {
           localStorage.setItem("token", JSON.stringify(token));
           navigate("/reset");
         } catch (err) {
-          console.log(err);
+          if (err.response.data.errors === undefined) {
+            setErrMessage(err.response.data.message);
+            setOpenErr(true);
+          } else {
+            setErrMessage(err.response.data.errors.email);
+            setOpenErr(true);
+          }
+          return;
         }
       }
     },
   });
 
-  const handleResend = () => {
-    resend({ email: userEmail });
+  const handleResend = async () => {
+    if (location.state === null) {
+      try {
+        await resend({ email: userEmail });
+        setOpenMessage(true);
+        return;
+      } catch (err) {
+        setErrMessage(err.response.data.message);
+        setOpenErr(true);
+        return;
+      }
+    }
+
+    if (location.state.from === "/forgot") {
+      try {
+        await resend({ email: location.state.email });
+        setOpenMessage(true);
+      } catch (err) {
+        setErrMessage(err.response.data.message);
+        setOpenErr(true);
+      }
+    }
   };
   return (
     <Grid
@@ -119,6 +164,32 @@ const Verify = () => {
               <Button type="submit" variant="outlined" size="small">
                 Verify
               </Button>
+            </Grid>
+            <Grid item>
+              <Snackbar
+                open={openMessage}
+                autoHideDuration={3000}
+                onClose={() => {
+                  setOpenMessage(false);
+                }}
+              >
+                <Alert severity="success" color="info">
+                  Verification code sent!
+                </Alert>
+              </Snackbar>
+            </Grid>
+            <Grid item>
+              <Snackbar
+                open={openErr}
+                autoHideDuration={5000}
+                onClose={() => {
+                  setOpenErr(false);
+                }}
+              >
+                <Alert severity="error" color="error">
+                  {errMessage}
+                </Alert>
+              </Snackbar>
             </Grid>
           </Grid>
         </form>
