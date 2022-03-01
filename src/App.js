@@ -7,6 +7,7 @@ import Verify from "./pages/Verify";
 import Forgot from "./pages/Forgot";
 import Reset from "./pages/Reset";
 import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
 import { authContext } from "./auth/useAuth";
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
       <Route path="/verify" element={<Verify />} />
       <Route path="/forgot" element={<Forgot />} />
       <Route path="/reset" element={<Reset />} />
+      <Route path="/*" element={<NotFound />} />
     </Routes>
   );
 };
