@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import logo from "../images/logo.png";
 import { reset } from "../api/api";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Reset = () => {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ const Reset = () => {
 
   const [openErr, setOpenErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const validationSchema = yup.object({
     password: yup
@@ -43,12 +46,14 @@ const Reset = () => {
     validationSchema,
     onSubmit: async values => {
       try {
+        setIsLoading(true);
         await reset(values);
+
         navigate("/login");
+        setIsLoading(false);
+        return;
       } catch (err) {
-        if (err.response.data.message === 401) {
-          reset(values);
-        }
+        setIsLoading(false);
         setErrMessage(err.response.data.message);
         setOpenErr(true);
       }
@@ -109,11 +114,17 @@ const Reset = () => {
                 FormHelperTextProps={errorStyles}
               />
             </Grid>
-            <Grid item>
-              <Button variant="outlined" type="submit" size="small">
-                Reset password
-              </Button>
-            </Grid>
+            {isLoading ? (
+              <Grid item>
+                <CircularProgress />
+              </Grid>
+            ) : (
+              <Grid item>
+                <Button variant="outlined" type="submit" size="small">
+                  Reset password
+                </Button>
+              </Grid>
+            )}
             <Grid item>
               <Snackbar
                 open={openErr}

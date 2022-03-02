@@ -6,6 +6,7 @@ import * as yup from "yup";
 import logo from "../images/logo.png";
 import { login } from "../api/api";
 import { authContext } from "../auth/useAuth";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Login = () => {
   const { authLogin } = useContext(authContext);
@@ -16,6 +17,8 @@ const Login = () => {
 
   const [openErr, setOpenErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const validationSchema = yup.object({
     email: yup
@@ -45,6 +48,7 @@ const Login = () => {
     validationSchema,
     onSubmit: async values => {
       try {
+        setIsLoading(true);
         const response = await login(values);
         const data = await response.data;
         const token = data.token;
@@ -53,13 +57,16 @@ const Login = () => {
         localStorage.setItem("userEmail", values.email);
         authLogin();
         navigate("/");
+        setIsLoading(false);
         return;
       } catch (err) {
         if (err.response.status === 401) {
           localStorage.setItem("userEmail", values.email);
           navigate("/verify");
+          setIsLoading(false);
           return;
         }
+        setIsLoading(false);
         setErrMessage(err.response.data.message);
         setOpenErr(true);
       }
@@ -113,21 +120,29 @@ const Login = () => {
                 FormHelperTextProps={errorStyles}
               />
             </Grid>
-            <Grid item>
-              <Link underline="always" variant="body2" href="/forgot">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Button variant="outlined" type="submit" size="small">
-                Login
-              </Button>
-            </Grid>
-            <Grid item>
-              <Link underline="always" variant="body2" href="/register">
-                Don't have an account? Register here.
-              </Link>
-            </Grid>
+            {isLoading ? (
+              <Grid item>
+                <CircularProgress />
+              </Grid>
+            ) : (
+              <>
+                <Grid item>
+                  <Link underline="always" variant="body2" href="/forgot">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Button variant="outlined" type="submit" size="small">
+                    Login
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Link underline="always" variant="body2" href="/register">
+                    Don't have an account? Register here.
+                  </Link>
+                </Grid>
+              </>
+            )}
             <Grid item>
               <Snackbar
                 open={openErr}

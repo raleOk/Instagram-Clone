@@ -14,6 +14,7 @@ import * as yup from "yup";
 import logo from "../images/logo.png";
 import { verify, resend } from "../api/api";
 import { authContext } from "../auth/useAuth";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Verify = () => {
   const { authLogin } = useContext(authContext);
@@ -25,8 +26,11 @@ const Verify = () => {
   };
 
   const [openMessage, setOpenMessage] = useState(false);
+
   const [openErr, setOpenErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const validationSchema = yup.object({
     token: yup
@@ -45,6 +49,7 @@ const Verify = () => {
     onSubmit: async values => {
       if (location.state === null) {
         try {
+          setIsLoading(true);
           values.email = userEmail;
           const response = await verify(values);
           const token = await response.data.token;
@@ -52,12 +57,16 @@ const Verify = () => {
           authLogin();
           localStorage.setItem("token", token);
           navigate("/");
+          setIsLoading(false);
           return;
         } catch (err) {
           if (err.response.data.errors === undefined) {
+            setIsLoading(false);
             setErrMessage(err.response.data.message);
             setOpenErr(true);
+            return;
           } else {
+            setIsLoading(false);
             setErrMessage(err.response.data.errors.email);
             setOpenErr(true);
           }
@@ -67,18 +76,23 @@ const Verify = () => {
 
       if (location.state.from === "/forgot") {
         try {
+          setIsLoading(true);
           values.email = location.state.email;
           const response = await verify(values);
           const token = await response.data.token;
 
           localStorage.setItem("token", token);
           navigate("/reset");
+          setIsLoading(false);
           return;
         } catch (err) {
           if (err.response.data.errors === undefined) {
+            setIsLoading(false);
             setErrMessage(err.response.data.message);
             setOpenErr(true);
+            return;
           } else {
+            setIsLoading(false);
             setErrMessage(err.response.data.errors.email);
             setOpenErr(true);
           }
@@ -150,22 +164,30 @@ const Verify = () => {
                 FormHelperTextProps={errorStyles}
               />
             </Grid>
-            <Grid item>
-              <Link
-                component="button"
-                underline="always"
-                variant="body2"
-                type="button"
-                onClick={handleResend}
-              >
-                Didn't get the email? Send again.
-              </Link>
-            </Grid>
-            <Grid item>
-              <Button type="submit" variant="outlined" size="small">
-                Verify
-              </Button>
-            </Grid>
+            {isLoading ? (
+              <Grid item>
+                <CircularProgress />
+              </Grid>
+            ) : (
+              <>
+                <Grid item>
+                  <Link
+                    component="button"
+                    underline="always"
+                    variant="body2"
+                    type="button"
+                    onClick={handleResend}
+                  >
+                    Didn't get the email? Send again.
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Button type="submit" variant="outlined" size="small">
+                    Verify
+                  </Button>
+                </Grid>
+              </>
+            )}
             <Grid item>
               <Snackbar
                 open={openMessage}

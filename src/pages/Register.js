@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import logo from "../images/logo.png";
 import { register } from "../api/api";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ const Register = () => {
 
   const [openErr, setOpenErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const supportedFormats = ["image/jpg", "image/jpeg", "image/png", undefined];
   const validationSchema = yup.object({
@@ -67,16 +70,22 @@ const Register = () => {
     validationSchema,
     onSubmit: async values => {
       try {
+        setIsLoading(true);
         await register(values);
         localStorage.setItem("userEmail", values.email);
+
         navigate("/verify");
+        setIsLoading(false);
+        return;
       } catch (err) {
         if (err.response.data.errors === undefined) {
+          setIsLoading(false);
           setErrMessage(err.response.data.message);
           setOpenErr(true);
           return;
         } else {
           const errors = err.response.data.errors;
+          setIsLoading(false);
           setErrMessage(errors[Object.keys(errors)[0]]);
           setOpenErr(true);
         }
@@ -179,16 +188,24 @@ const Register = () => {
                 FormHelperTextProps={errorStyles}
               />
             </Grid>
-            <Grid item>
-              <Button variant="outlined" type="submit" size="small">
-                Register
-              </Button>
-            </Grid>
-            <Grid item>
-              <Link underline="always" variant="body2" href="/login">
-                Already have an account? Log in!
-              </Link>
-            </Grid>
+            {isLoading ? (
+              <Grid item>
+                <CircularProgress />
+              </Grid>
+            ) : (
+              <>
+                <Grid item>
+                  <Button variant="outlined" type="submit" size="small">
+                    Register
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Link underline="always" variant="body2" href="/login">
+                    Already have an account? Log in!
+                  </Link>
+                </Grid>
+              </>
+            )}
             <Grid item>
               <Snackbar
                 open={openErr}
