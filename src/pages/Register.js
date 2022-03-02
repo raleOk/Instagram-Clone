@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Grid, Button, TextField, Link } from "@mui/material";
+import { Grid, Button, TextField, Link, Alert, Snackbar } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import logo from "../images/logo.png";
@@ -11,6 +11,9 @@ const Register = () => {
   const errorStyles = {
     sx: { width: 180 },
   };
+
+  const [openErr, setOpenErr] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
 
   const supportedFormats = ["image/jpg", "image/jpeg", "image/png", undefined];
   const validationSchema = yup.object({
@@ -68,7 +71,15 @@ const Register = () => {
         localStorage.setItem("userEmail", JSON.stringify(values.email));
         navigate("/verify");
       } catch (err) {
-        console.log(err);
+        if (err.response.data.errors === undefined) {
+          setErrMessage(err.response.data.message);
+          setOpenErr(true);
+          return;
+        } else {
+          const errors = err.response.data.errors;
+          setErrMessage(errors[Object.keys(errors)[0]]);
+          setOpenErr(true);
+        }
       }
     },
   });
@@ -177,6 +188,20 @@ const Register = () => {
               <Link underline="always" variant="body2" href="/login">
                 Already have an account? Log in!
               </Link>
+            </Grid>
+            <Grid item>
+              <Snackbar
+                open={openErr}
+                autoHideDuration={5000}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                onClose={() => {
+                  setOpenErr(false);
+                }}
+              >
+                <Alert severity="error" color="error">
+                  {errMessage}
+                </Alert>
+              </Snackbar>
             </Grid>
           </Grid>
         </form>
