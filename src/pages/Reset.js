@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Grid, Button, TextField, Alert, Snackbar } from "@mui/material";
+import { Grid, Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import logo from "../images/logo.png";
 import { reset } from "../api/api";
 import CircularProgress from "@mui/material/CircularProgress";
+import ErrorAlert from "../components/ErrorAlert";
 
 const Reset = () => {
   const navigate = useNavigate();
@@ -13,10 +14,13 @@ const Reset = () => {
     sx: { width: 180 },
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [openErr, setOpenErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
-
-  const [isLoading, setIsLoading] = useState(false);
+  const handleErrMessageClose = () => {
+    setOpenErr(false);
+  };
 
   const validationSchema = yup.object({
     password: yup
@@ -126,18 +130,11 @@ const Reset = () => {
               </Grid>
             )}
             <Grid item>
-              <Snackbar
-                open={openErr}
-                autoHideDuration={5000}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                onClose={() => {
-                  setOpenErr(false);
-                }}
-              >
-                <Alert severity="error" color="error">
-                  {errMessage}
-                </Alert>
-              </Snackbar>
+              <ErrorAlert
+                openErr={openErr}
+                errMessage={errMessage}
+                handleClose={handleErrMessageClose}
+              />
             </Grid>
           </Grid>
         </form>

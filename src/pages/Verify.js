@@ -1,20 +1,14 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import {
-  Grid,
-  Button,
-  TextField,
-  Link,
-  Typography,
-  Alert,
-  Snackbar,
-} from "@mui/material";
+import { Grid, Button, TextField, Link, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import logo from "../images/logo.png";
 import { verify, resend } from "../api/api";
 import { authContext } from "../auth/useAuth";
 import CircularProgress from "@mui/material/CircularProgress";
+import ErrorAlert from "../components/ErrorAlert";
+import SuccessAlert from "../components/SuccessAlert";
 
 const Verify = () => {
   const { authLogin } = useContext(authContext);
@@ -25,12 +19,18 @@ const Verify = () => {
     sx: { width: 180 },
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [openMessage, setOpenMessage] = useState(false);
+  const handleMessageClose = () => {
+    setOpenMessage(false);
+  };
 
   const [openErr, setOpenErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
-
-  const [isLoading, setIsLoading] = useState(false);
+  const handleErrMessageClose = () => {
+    setOpenErr(false);
+  };
 
   const validationSchema = yup.object({
     token: yup
@@ -189,31 +189,17 @@ const Verify = () => {
               </>
             )}
             <Grid item>
-              <Snackbar
-                open={openMessage}
-                autoHideDuration={3000}
-                onClose={() => {
-                  setOpenMessage(false);
-                }}
-              >
-                <Alert severity="success" color="info">
-                  Verification code sent!
-                </Alert>
-              </Snackbar>
+              <SuccessAlert
+                openMessage={openMessage}
+                handleClose={handleMessageClose}
+              />
             </Grid>
             <Grid item>
-              <Snackbar
-                open={openErr}
-                autoHideDuration={5000}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                onClose={() => {
-                  setOpenErr(false);
-                }}
-              >
-                <Alert severity="error" color="error">
-                  {errMessage}
-                </Alert>
-              </Snackbar>
+              <ErrorAlert
+                openErr={openErr}
+                errMessage={errMessage}
+                handleClose={handleErrMessageClose}
+              />
             </Grid>
           </Grid>
         </form>
