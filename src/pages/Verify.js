@@ -19,7 +19,7 @@ const Verify = () => {
   const { authLogin } = useContext(authContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const userEmail = JSON.parse(localStorage.getItem("userEmail"));
+  const userEmail = localStorage.getItem("userEmail");
   const errorStyles = {
     sx: { width: 180 },
   };
@@ -50,7 +50,7 @@ const Verify = () => {
           const token = await response.data.token;
 
           authLogin();
-          localStorage.setItem("token", JSON.stringify(token));
+          localStorage.setItem("token", token);
           navigate("/");
           return;
         } catch (err) {
@@ -71,8 +71,9 @@ const Verify = () => {
           const response = await verify(values);
           const token = await response.data.token;
 
-          localStorage.setItem("token", JSON.stringify(token));
+          localStorage.setItem("token", token);
           navigate("/reset");
+          return;
         } catch (err) {
           if (err.response.data.errors === undefined) {
             setErrMessage(err.response.data.message);
@@ -182,6 +183,7 @@ const Verify = () => {
               <Snackbar
                 open={openErr}
                 autoHideDuration={5000}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                 onClose={() => {
                   setOpenErr(false);
                 }}

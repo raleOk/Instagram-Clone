@@ -68,7 +68,7 @@ const Register = () => {
     onSubmit: async values => {
       try {
         await register(values);
-        localStorage.setItem("userEmail", JSON.stringify(values.email));
+        localStorage.setItem("userEmail", values.email);
         navigate("/verify");
       } catch (err) {
         if (err.response.data.errors === undefined) {

@@ -49,14 +49,14 @@ const Login = () => {
         const data = await response.data;
         const token = data.token;
 
-        localStorage.setItem("token", JSON.stringify(token));
-        localStorage.setItem("userEmail", JSON.stringify(values.email));
+        localStorage.setItem("token", token);
+        localStorage.setItem("userEmail", values.email);
         authLogin();
         navigate("/");
         return;
       } catch (err) {
         if (err.response.status === 401) {
-          localStorage.setItem("userEmail", JSON.stringify(values.email));
+          localStorage.setItem("userEmail", values.email);
           navigate("/verify");
           return;
         }
