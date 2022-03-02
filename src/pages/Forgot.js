@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Grid, Button, TextField } from "@mui/material";
+import { Grid, Button, TextField, Alert, Snackbar } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import logo from "../images/logo.png";
@@ -11,6 +11,9 @@ const Forgot = () => {
   const errorStyles = {
     sx: { width: 180 },
   };
+
+  const [openErr, setOpenErr] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
 
   const validationSchema = yup.object({
     email: yup
@@ -31,7 +34,8 @@ const Forgot = () => {
           state: { from: "/forgot", email: values.email },
         });
       } catch (err) {
-        console.log(err);
+        setErrMessage(err.response.data.message);
+        setOpenErr(true);
       }
     },
   });
@@ -72,6 +76,20 @@ const Forgot = () => {
               <Button variant="outlined" type="submit" size="small">
                 Send reset code
               </Button>
+            </Grid>
+            <Grid item>
+              <Snackbar
+                open={openErr}
+                autoHideDuration={5000}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                onClose={() => {
+                  setOpenErr(false);
+                }}
+              >
+                <Alert severity="error" color="error">
+                  {errMessage}
+                </Alert>
+              </Snackbar>
             </Grid>
           </Grid>
         </form>
