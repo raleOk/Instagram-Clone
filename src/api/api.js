@@ -1,15 +1,30 @@
 import axios from "axios";
 
 const baseURL = "https://starfish-y8ps9.herokuapp.com/api/auth/";
-const token = JSON.parse(localStorage.getItem("token"));
 
 const axiosInstance = axios.create({
   baseURL,
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
   },
 });
+
+axiosInstance.interceptors.request.use(
+  function (config) {
+    const token = localStorage.getItem("token");
+    const tokenConfig = {
+      ...config,
+      headers: {
+        ...config.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    return tokenConfig;
+  },
+  function (err) {
+    return Promise.reject(err);
+  }
+);
 
 const register = async data => {
   const formData = new FormData();
