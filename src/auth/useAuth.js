@@ -3,7 +3,7 @@ import React, { useState, createContext } from "react";
 const authContext = createContext();
 
 const useAuth = () => {
-  const [auth, setAuth] = useState(-1);
+  const [auth, setAuth] = useState(false);
 
   return {
     auth,

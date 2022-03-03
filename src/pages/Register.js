@@ -1,13 +1,27 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Grid, Button, TextField } from "@mui/material";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Grid, Button, TextField, Link } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import logo from "../images/logo.png";
 import { register } from "../api/api";
+import CircularProgress from "@mui/material/CircularProgress";
+import ErrorAlert from "../components/ErrorAlert";
 
 const Register = () => {
   const navigate = useNavigate();
+  const errorStyles = {
+    sx: { width: 180 },
+  };
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [openErr, setOpenErr] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
+  const handleErrMessageClose = () => {
+    setOpenErr(false);
+  };
+
   const supportedFormats = ["image/jpg", "image/jpeg", "image/png", undefined];
   const validationSchema = yup.object({
     username: yup
@@ -60,11 +74,25 @@ const Register = () => {
     validationSchema,
     onSubmit: async values => {
       try {
+        setIsLoading(true);
         await register(values);
-        localStorage.setItem("userEmail", JSON.stringify(values.email));
+        localStorage.setItem("userEmail", values.email);
+
         navigate("/verify");
+        setIsLoading(false);
+        return;
       } catch (err) {
-        console.log(err);
+        if (err.response.data.errors === undefined) {
+          setIsLoading(false);
+          setErrMessage(err.response.data.message);
+          setOpenErr(true);
+          return;
+        } else {
+          const errors = err.response.data.errors;
+          setIsLoading(false);
+          setErrMessage(errors[Object.keys(errors)[0]]);
+          setOpenErr(true);
+        }
       }
     },
   });
@@ -101,6 +129,7 @@ const Register = () => {
                   formik.touched.username && Boolean(formik.errors.username)
                 }
                 helperText={formik.touched.username && formik.errors.username}
+                FormHelperTextProps={errorStyles}
               />
             </Grid>
             <Grid item>
@@ -112,6 +141,7 @@ const Register = () => {
                 onChange={formik.handleChange}
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
+                FormHelperTextProps={errorStyles}
               />
             </Grid>
             <Grid item>
@@ -126,6 +156,7 @@ const Register = () => {
                   formik.touched.password && Boolean(formik.errors.password)
                 }
                 helperText={formik.touched.password && formik.errors.password}
+                FormHelperTextProps={errorStyles}
               />
             </Grid>
             <Grid item>
@@ -144,6 +175,7 @@ const Register = () => {
                   formik.touched.passwordConfirm &&
                   formik.errors.passwordConfirm
                 }
+                FormHelperTextProps={errorStyles}
               />
             </Grid>
             <Grid item>
@@ -157,15 +189,33 @@ const Register = () => {
                 }}
                 error={formik.touched.avatar && Boolean(formik.errors.avatar)}
                 helperText={formik.touched.avatar && formik.errors.avatar}
+                FormHelperTextProps={errorStyles}
               />
             </Grid>
+            {isLoading ? (
+              <Grid item>
+                <CircularProgress />
+              </Grid>
+            ) : (
+              <>
+                <Grid item>
+                  <Button variant="outlined" type="submit" size="small">
+                    Register
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Link underline="always" variant="body2" href="/login">
+                    Already have an account? Log in!
+                  </Link>
+                </Grid>
+              </>
+            )}
             <Grid item>
-              <Button variant="outlined" type="submit" size="small">
-                Register
-              </Button>
-            </Grid>
-            <Grid item>
-              <Link to={"/login"}>Already have an account? Log in!</Link>
+              <ErrorAlert
+                openErr={openErr}
+                errMessage={errMessage}
+                handleClose={handleErrMessageClose}
+              />
             </Grid>
           </Grid>
         </form>
