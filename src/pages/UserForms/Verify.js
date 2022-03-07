@@ -3,12 +3,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Grid, Button, TextField, Link, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import logo from "../images/logo.png";
-import { verify, resend } from "../api/api";
-import { authContext } from "../auth/useAuth";
+import logo from "../../images/logo.png";
+import { verify, resend } from "../../api/api";
+import { authContext } from "../../auth/useAuth";
 import CircularProgress from "@mui/material/CircularProgress";
-import ErrorAlert from "../components/Alerts/ErrorAlert";
-import SuccessAlert from "../components/Alerts/SuccessAlert";
+import ErrorAlert from "../../components/Alerts/ErrorAlert";
+import SuccessAlert from "../../components/Alerts/SuccessAlert";
 
 const Verify = () => {
   const { authLogin } = useContext(authContext);
@@ -52,7 +52,7 @@ const Verify = () => {
           setIsLoading(true);
           values.email = userEmail;
           const response = await verify(values);
-          const token = await response.data.token;
+          const token = response.data.token;
 
           authLogin();
           localStorage.setItem("token", token);
@@ -79,7 +79,7 @@ const Verify = () => {
           setIsLoading(true);
           values.email = location.state.email;
           const response = await verify(values);
-          const token = await response.data.token;
+          const token = response.data.token;
 
           localStorage.setItem("token", token);
           navigate("/reset");

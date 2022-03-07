@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { Grid, Button, TextField, Link } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import logo from "../images/logo.png";
-import { register } from "../api/api";
+import logo from "../../images/logo.png";
+import { register } from "../../api/api";
 import CircularProgress from "@mui/material/CircularProgress";
-import ErrorAlert from "../components/Alerts/ErrorAlert";
+import ErrorAlert from "../../components/Alerts/ErrorAlert";
 
 const Register = () => {
   const navigate = useNavigate();
