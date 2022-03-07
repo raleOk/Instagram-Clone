@@ -9,6 +9,7 @@ import Forgot from "./pages/Forgot";
 import Reset from "./pages/Reset";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import Navbar from "./components/Navbar/Navbar";
 import { authContext } from "./auth/useAuth";
 
 const App = () => {
@@ -19,7 +20,9 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<ProtectedRoutes />}>
-        <Route path="/" element={<Home />} exact />
+        <Route path="/" element={<Navbar />} exact>
+          <Route path="/" element={<Home />} exact />
+        </Route>
       </Route>
       <Route path="/" element={<UnprotectedRoutes />}>
         <Route path="/register" element={<Register />} />
