@@ -7,8 +7,8 @@ import logo from "../images/logo.png";
 import { verify, resend } from "../api/api";
 import { authContext } from "../auth/useAuth";
 import CircularProgress from "@mui/material/CircularProgress";
-import ErrorAlert from "../components/ErrorAlert";
-import SuccessAlert from "../components/SuccessAlert";
+import ErrorAlert from "../components/Alerts/ErrorAlert";
+import SuccessAlert from "../components/Alerts/SuccessAlert";
 
 const Verify = () => {
   const { authLogin } = useContext(authContext);

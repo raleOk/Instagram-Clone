@@ -7,7 +7,7 @@ import logo from "../images/logo.png";
 import { login } from "../api/api";
 import { authContext } from "../auth/useAuth";
 import CircularProgress from "@mui/material/CircularProgress";
-import ErrorAlert from "../components/ErrorAlert";
+import ErrorAlert from "../components/Alerts/ErrorAlert";
 
 const Login = () => {
   const { authLogin } = useContext(authContext);

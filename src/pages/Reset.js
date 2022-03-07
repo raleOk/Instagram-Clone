@@ -6,7 +6,7 @@ import * as yup from "yup";
 import logo from "../images/logo.png";
 import { reset } from "../api/api";
 import CircularProgress from "@mui/material/CircularProgress";
-import ErrorAlert from "../components/ErrorAlert";
+import ErrorAlert from "../components/Alerts/ErrorAlert";
 
 const Reset = () => {
   const navigate = useNavigate();
