@@ -1,17 +1,25 @@
 import React, { useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
+import { useNavigate } from "react-router-dom";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  MenuItem,
+  Menu,
+  Avatar,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import Avatar from "@mui/material/Avatar";
-import { Search, SearchIconWrapper, StyledInputBase } from "./TabsStyles";
 import navLogo from "../../images/navLogo.png";
+import { Search, SearchIconWrapper, StyledInputBase } from "./TabsStyles";
 
 const Tabs = () => {
+  const navigate = useNavigate();
+
+  const logo = <img src={navLogo} alt="navLogo" />;
+
+  //menu state and handlers
   const [anchorEl, setAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -19,12 +27,9 @@ const Tabs = () => {
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-
-  const logo = <img src={navLogo} alt="navLogo" />;
 
   const renderMenu = (
     <Menu
@@ -42,8 +47,22 @@ const Tabs = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem
+        onClick={() => {
+          navigate("/profile");
+          handleMenuClose();
+        }}
+      >
+        Profile
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          navigate("/profile");
+          handleMenuClose();
+        }}
+      >
+        Settings
+      </MenuItem>
     </Menu>
   );
 
@@ -54,7 +73,16 @@ const Tabs = () => {
           <Typography
             noWrap
             component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+            onClick={() => {
+              navigate("/");
+            }}
+            sx={{
+              display: {
+                xs: "none",
+                sm: "block",
+                ":hover": { cursor: "pointer" },
+              },
+            }}
           >
             {logo}
           </Typography>
@@ -67,13 +95,12 @@ const Tabs = () => {
               inputProps={{ "aria-label": "search" }}
             />
           </Search>
-
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <MenuItem
               key="My posts"
               onClick={() => {
-                console.log("test");
+                navigate("/my-posts");
               }}
             >
               <Typography textAlign="center">My Posts</Typography>
@@ -81,7 +108,7 @@ const Tabs = () => {
             <MenuItem
               key="likedPosts"
               onClick={() => {
-                console.log("test");
+                navigate("/liked");
               }}
             >
               <Typography textAlign="center">Liked posts</Typography>
@@ -89,7 +116,7 @@ const Tabs = () => {
             <MenuItem
               key="createPost"
               onClick={() => {
-                console.log("test");
+                navigate("/create");
               }}
             >
               <Typography textAlign="center">Create post</Typography>
