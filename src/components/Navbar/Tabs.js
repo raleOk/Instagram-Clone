@@ -11,6 +11,8 @@ import {
   Avatar,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import MoreIcon from "@mui/icons-material/MoreVert";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import navLogo from "../../images/navLogo.png";
 import { Search, SearchIconWrapper, StyledInputBase } from "./TabsStyles";
 
@@ -29,6 +31,18 @@ const Tabs = () => {
   };
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  //mobile menu state and handlers
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const handleMobileMenuOpen = event => {
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
   };
 
   const renderMenu = (
@@ -62,6 +76,55 @@ const Tabs = () => {
         }}
       >
         Settings
+      </MenuItem>
+    </Menu>
+  );
+
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id="primary-search-account-menu-mobile"
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem
+        key="My posts"
+        onClick={() => {
+          navigate("/my-posts");
+        }}
+      >
+        My Posts
+      </MenuItem>
+      <MenuItem
+        key="likedPosts"
+        onClick={() => {
+          navigate("/liked");
+        }}
+      >
+        Liked posts
+      </MenuItem>
+      <MenuItem
+        key="createPost"
+        onClick={() => {
+          navigate("/create");
+        }}
+      >
+        Create post
+      </MenuItem>
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton size="small" color="inherit">
+          <AccountCircle />
+        </IconButton>
+        <Typography>Profile</Typography>
       </MenuItem>
     </Menu>
   );
@@ -125,8 +188,18 @@ const Tabs = () => {
               <Avatar alt="avatar" />
             </IconButton>
           </Box>
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              size="large"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
+              <MoreIcon />
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
+      {renderMobileMenu}
       {renderMenu}
     </Box>
   );
