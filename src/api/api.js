@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "https://starfish-y8ps9.herokuapp.com/api/auth/";
+const baseURL = "https://starfish-y8ps9.herokuapp.com/api/";
 
 const axiosInstance = axios.create({
   baseURL,
@@ -37,27 +37,31 @@ const register = async data => {
       "Content-Type": "multipart/form-data",
     },
   };
-  return axiosInstance.post("register", formData, config);
+  return axiosInstance.post("auth/register", formData, config);
 };
 
 const login = async data => {
-  return axiosInstance.post("login", data);
+  return axiosInstance.post("auth/login", data);
 };
 
 const verify = async data => {
-  return axiosInstance.post("verify", data);
+  return axiosInstance.post("auth/verify", data);
 };
 
 const resend = async data => {
-  return axiosInstance.post("resend", data);
+  return axiosInstance.post("auth/resend", data);
 };
 
 const forgot = async data => {
-  return axiosInstance.post("forgot", data);
+  return axiosInstance.post("auth/forgot", data);
 };
 
 const reset = async data => {
-  return axiosInstance.post("reset", data);
+  return axiosInstance.post("auth/reset", data);
 };
 
-export { register, login, verify, resend, forgot, reset };
+const updateUsername = async (data, userId) => {
+  return axiosInstance.put(`users/${userId}`, data);
+};
+
+export { register, login, verify, resend, forgot, reset, updateUsername };
