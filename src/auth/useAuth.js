@@ -29,6 +29,7 @@ const useAuth = () => {
       localStorage.removeItem("isLogged");
       localStorage.removeItem("token");
       localStorage.removeItem("userEmail");
+      localStorage.removeItem("id");
     },
   };
 };
