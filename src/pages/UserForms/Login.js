@@ -54,12 +54,14 @@ const Login = () => {
       try {
         setIsLoading(true);
         const response = await login(values);
-        const id = response.data.user._id;
         const token = response.data.token;
+        const { id, username, avatar } = response.data.user;
 
         localStorage.setItem("token", token);
         localStorage.setItem("id", id);
-        localStorage.setItem("userEmail", values.email);
+        localStorage.setItem("username", username);
+        localStorage.setItem("avatar", avatar);
+        localStorage.removeItem("userEmail");
         authLogin();
         navigate("/");
         setIsLoading(false);

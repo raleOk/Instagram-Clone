@@ -30,6 +30,8 @@ const useAuth = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("userEmail");
       localStorage.removeItem("id");
+      localStorage.removeItem("avatar");
+      localStorage.removeItem("username");
     },
   };
 };

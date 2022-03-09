@@ -20,6 +20,7 @@ const Tabs = () => {
   const navigate = useNavigate();
 
   const logo = <img src={navLogo} alt="navLogo" />;
+  const avatar = localStorage.getItem("avatar");
 
   //menu state and handlers
   const [anchorEl, setAnchorEl] = useState(null);
@@ -185,7 +186,7 @@ const Tabs = () => {
               <Typography textAlign="center">Create post</Typography>
             </MenuItem>
             <IconButton size="large" edge="end" onClick={handleProfileMenuOpen}>
-              <Avatar alt="avatar" />
+              <Avatar src={avatar} alt="avatar" />
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
