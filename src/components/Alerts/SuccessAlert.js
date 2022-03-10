@@ -2,7 +2,7 @@ import React from "react";
 import { Alert, Snackbar } from "@mui/material";
 
 const SuccessAlert = props => {
-  const { openMessage, handleClose } = props;
+  const { openMessage, handleClose, successMessage } = props;
 
   return (
     <>
@@ -12,7 +12,7 @@ const SuccessAlert = props => {
         onClose={handleClose}
       >
         <Alert severity="success" color="info">
-          Verification code sent!
+          {successMessage}
         </Alert>
       </Snackbar>
     </>
