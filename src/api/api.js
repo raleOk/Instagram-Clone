@@ -69,8 +69,8 @@ const updateAvatar = async (data, userId) => {
   return axiosInstance.put(`users/${userId}`, data, imgConfig);
 };
 
-const updatePassword = async (data, userId) => {
-  return axiosInstance.patch(`users/${userId}`, data);
+const updatePassword = async data => {
+  return axiosInstance.patch("users/password", data);
 };
 
 const deleteUser = async userId => {
