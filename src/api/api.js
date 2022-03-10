@@ -26,18 +26,19 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+//headers for sending images and videos
+const imgConfig = {
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+};
+
 const register = async data => {
   const formData = new FormData();
   for (let key in data) {
     formData.append(`${key}`, data[key]);
   }
-
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  };
-  return axiosInstance.post("auth/register", formData, config);
+  return axiosInstance.post("auth/register", formData, imgConfig);
 };
 
 const login = async data => {
@@ -64,4 +65,27 @@ const updateUsername = async (data, userId) => {
   return axiosInstance.put(`users/${userId}`, data);
 };
 
-export { register, login, verify, resend, forgot, reset, updateUsername };
+const updateAvatar = async (data, userId) => {
+  return axiosInstance.put(`users/${userId}`, data, imgConfig);
+};
+
+const updatePassword = async (data, userId) => {
+  return axiosInstance.patch(`users/${userId}`, data);
+};
+
+const deleteUser = async userId => {
+  return axiosInstance.delete(`users/${userId}`);
+};
+
+export {
+  register,
+  login,
+  verify,
+  resend,
+  forgot,
+  reset,
+  updateUsername,
+  updateAvatar,
+  updatePassword,
+  deleteUser,
+};
