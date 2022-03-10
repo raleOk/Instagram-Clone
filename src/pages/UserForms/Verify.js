@@ -9,15 +9,13 @@ import { authContext } from "../../auth/useAuth";
 import CircularProgress from "@mui/material/CircularProgress";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
 import SuccessAlert from "../../components/Alerts/SuccessAlert";
+import { errorStyles } from "../../styles/styles";
 
 const Verify = () => {
   const { authLogin } = useContext(authContext);
   const navigate = useNavigate();
   const location = useLocation();
   const userEmail = localStorage.getItem("userEmail");
-  const errorStyles = {
-    sx: { width: 180 },
-  };
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -192,6 +190,7 @@ const Verify = () => {
               <SuccessAlert
                 openMessage={openMessage}
                 handleClose={handleMessageClose}
+                successMessage="Verification code sent!"
               />
             </Grid>
             <Grid item>

@@ -7,12 +7,10 @@ import logo from "../../images/logo.png";
 import { reset } from "../../api/api";
 import CircularProgress from "@mui/material/CircularProgress";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
+import { errorStyles } from "../../styles/styles";
 
 const Reset = () => {
   const navigate = useNavigate();
-  const errorStyles = {
-    sx: { width: 180 },
-  };
 
   const [isLoading, setIsLoading] = useState(false);
 

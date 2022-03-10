@@ -8,13 +8,11 @@ import { login } from "../../api/api";
 import { authContext } from "../../auth/useAuth";
 import CircularProgress from "@mui/material/CircularProgress";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
+import { errorStyles } from "../../styles/styles";
 
 const Login = () => {
   const { authLogin } = useContext(authContext);
   const navigate = useNavigate();
-  const errorStyles = {
-    sx: { width: 180 },
-  };
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -55,10 +53,10 @@ const Login = () => {
         setIsLoading(true);
         const response = await login(values);
         const token = response.data.token;
-        const { id, username, avatar } = response.data.user;
+        const { _id, username, avatar } = response.data.user;
 
         localStorage.setItem("token", token);
-        localStorage.setItem("id", id);
+        localStorage.setItem("id", _id);
         localStorage.setItem("username", username);
         localStorage.setItem("avatar", avatar);
         localStorage.removeItem("userEmail");
