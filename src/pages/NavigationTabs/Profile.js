@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Grid,
   Avatar,
@@ -12,7 +13,8 @@ import SettingsIcon from "@mui/icons-material/Settings";
 const Profile = () => {
   const username = localStorage.getItem("username");
   const avatar = localStorage.getItem("avatar");
-  const [bio, setBio] = useState("Tell us something about yourself.");
+  const navigate = useNavigate();
+  const [bio, setBio] = useState("");
 
   const handleBio = event => {
     setBio(event.target.value);
@@ -24,6 +26,9 @@ const Profile = () => {
           variant="outlined"
           color="secondary"
           startIcon={<SettingsIcon />}
+          onClick={() => {
+            navigate("/settings/change-username");
+          }}
           sx={{ position: "absolute", top: "10px", right: "10px" }}
         >
           Settings
@@ -45,16 +50,13 @@ const Profile = () => {
         </Grid>
         <Grid item>
           <TextField
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              textAlign: "center",
-            }}
             multiline
-            rows={4}
+            minRows={4}
+            placeholder="Tell us something about yourself."
+            label=""
             value={bio}
             onChange={handleBio}
+            inputProps={{ maxLength: 122 }}
           />
         </Grid>
       </Grid>

@@ -72,7 +72,7 @@ const Tabs = () => {
       </MenuItem>
       <MenuItem
         onClick={() => {
-          navigate("/profile");
+          navigate("/settings/change-username");
           handleMenuClose();
         }}
       >
