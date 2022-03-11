@@ -26,19 +26,12 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-//headers for sending images and videos
-const imgConfig = {
-  headers: {
-    "Content-Type": "multipart/form-data",
-  },
-};
-
 const register = async data => {
   const formData = new FormData();
   for (let key in data) {
     formData.append(`${key}`, data[key]);
   }
-  return axiosInstance.post("auth/register", formData, imgConfig);
+  return axiosInstance.post("auth/register", formData);
 };
 
 const login = async data => {
@@ -66,7 +59,9 @@ const updateUsername = async (data, userId) => {
 };
 
 const updateAvatar = async (data, userId) => {
-  return axiosInstance.put(`users/${userId}`, data, imgConfig);
+  const formData = new FormData();
+  formData.append("avatar", data.avatar);
+  return axiosInstance.put(`users/${userId}`, formData);
 };
 
 const updatePassword = async data => {
