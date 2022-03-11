@@ -51,11 +51,16 @@ const Verify = () => {
           values.email = userEmail;
           const response = await verify(values);
           const token = response.data.token;
+          const { _id, username, avatar } = response.data.user;
 
-          authLogin();
           localStorage.setItem("token", token);
-          navigate("/");
+          localStorage.setItem("id", _id);
+          localStorage.setItem("username", username);
+          localStorage.setItem("avatar", avatar);
+          localStorage.removeItem("userEmail");
+          authLogin();
           setIsLoading(false);
+          navigate("/");
           return;
         } catch (err) {
           if (err.response.data.errors === undefined) {

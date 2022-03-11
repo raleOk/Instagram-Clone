@@ -61,14 +61,14 @@ const Login = () => {
         localStorage.setItem("avatar", avatar);
         localStorage.removeItem("userEmail");
         authLogin();
-        navigate("/");
         setIsLoading(false);
+        navigate("/");
         return;
       } catch (err) {
         if (err.response.status === 401) {
           localStorage.setItem("userEmail", values.email);
-          navigate("/verify");
           setIsLoading(false);
+          navigate("/verify");
           return;
         }
         setIsLoading(false);

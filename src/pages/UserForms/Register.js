@@ -76,8 +76,8 @@ const Register = () => {
         await register(values);
         localStorage.setItem("userEmail", values.email);
 
-        navigate("/verify");
         setIsLoading(false);
+        navigate("/verify");
         return;
       } catch (err) {
         if (err.response.data.errors === undefined) {

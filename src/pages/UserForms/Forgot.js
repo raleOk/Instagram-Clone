@@ -36,10 +36,10 @@ const Forgot = () => {
       try {
         setIsLoading(true);
         await forgot(values);
+        setIsLoading(false);
         navigate("/verify", {
           state: { from: "/forgot", email: values.email },
         });
-        setIsLoading(false);
         return;
       } catch (err) {
         setIsLoading(false);

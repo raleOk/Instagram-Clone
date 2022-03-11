@@ -51,8 +51,8 @@ const Reset = () => {
         setIsLoading(true);
         await reset(values);
 
-        navigate("/login");
         setIsLoading(false);
+        navigate("/login");
         return;
       } catch (err) {
         setIsLoading(false);
