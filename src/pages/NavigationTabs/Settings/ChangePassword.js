@@ -9,8 +9,6 @@ import { errorStyles } from "../../../styles/styles";
 import { updatePassword } from "../../../api/api";
 
 const ChangeUsername = () => {
-  const userId = localStorage.getItem("id");
-
   const [isLoading, setIsLoading] = useState(false);
 
   const [openMessage, setOpenMessage] = useState(false);
@@ -25,6 +23,19 @@ const ChangeUsername = () => {
   };
 
   const validationSchema = yup.object({
+    oldPassword: yup
+      .string("Enter your password.")
+      .min(8, "Password should be at least 8 characters long!")
+      .matches(
+        /[a-z]/,
+        "Password should have at least one lowercase character!"
+      )
+      .matches(
+        /[A-Z]/,
+        "Password should have at least one uppercase character!"
+      )
+      .matches(/[0-9]/, "Password should have at least number!")
+      .required("Password is required!"),
     password: yup
       .string("Enter your password.")
       .min(8, "Password should be at least 8 characters long!")
@@ -46,6 +57,7 @@ const ChangeUsername = () => {
 
   const formik = useFormik({
     initialValues: {
+      oldPassword: "",
       password: "",
       passwordConfirm: "",
     },
@@ -53,15 +65,18 @@ const ChangeUsername = () => {
     onSubmit: async values => {
       try {
         setIsLoading(true);
-        const res = await updatePassword(values, userId);
+        const res = await updatePassword(values);
         console.log(res);
 
         setIsLoading(false);
         setOpenMessage(true);
         return;
       } catch (err) {
-        console.log(err);
+        const errMsg = err.response.data.message;
         setIsLoading(false);
+        setErrMessage(errMsg);
+        setOpenErr(true);
+        return;
       }
     },
   });
@@ -77,9 +92,24 @@ const ChangeUsername = () => {
       >
         <Grid item>
           <TextField
+            id="oldPassword"
+            name="oldPassword"
+            label="Old password"
+            type="password"
+            value={formik.values.oldPassword}
+            onChange={formik.handleChange}
+            error={
+              formik.touched.oldPassword && Boolean(formik.errors.oldPassword)
+            }
+            helperText={formik.touched.oldPassword && formik.errors.oldPassword}
+            FormHelperTextProps={errorStyles}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
             id="password"
             name="password"
-            label="Password"
+            label="New password"
             type="password"
             value={formik.values.password}
             onChange={formik.handleChange}
@@ -92,7 +122,7 @@ const ChangeUsername = () => {
           <TextField
             id="passwordConfirm"
             name="passwordConfirm"
-            label="Confirm password"
+            label="Confirm new password"
             type="password"
             value={formik.values.passwordConfirm}
             onChange={formik.handleChange}
