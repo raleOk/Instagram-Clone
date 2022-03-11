@@ -1,9 +1,8 @@
 import React, { useState, createContext } from "react";
-
 const authContext = createContext();
 
 const useAuth = () => {
-  const [auth, setAuth] = useState(-1);
+  const [auth, setAuth] = useState(0);
 
   return {
     auth,
@@ -11,21 +10,21 @@ const useAuth = () => {
       const isLogged = localStorage.getItem("isLogged");
       switch (isLogged) {
         case "true":
-          setAuth(true);
+          setAuth(1);
           break;
         case "false":
-          setAuth(false);
+          setAuth(-1);
           break;
         default:
-          setAuth(false);
+          setAuth(-1);
       }
     },
     authLogin() {
-      setAuth(true);
+      setAuth(1);
       localStorage.setItem("isLogged", "true");
     },
     authLogout() {
-      setAuth(false);
+      setAuth(-1);
       localStorage.removeItem("isLogged");
       localStorage.removeItem("token");
       localStorage.removeItem("userEmail");
