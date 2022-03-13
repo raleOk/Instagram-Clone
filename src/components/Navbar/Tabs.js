@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   AppBar,
@@ -14,10 +14,14 @@ import SearchIcon from "@mui/icons-material/Search";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import navLogo from "../../images/navLogo.png";
+import Settings from "@mui/icons-material/Settings";
+import Logout from "@mui/icons-material/Logout";
 import { Search, SearchIconWrapper, StyledInputBase } from "./TabsStyles";
+import { authContext } from "../../auth/useAuth";
 
 const Tabs = () => {
   const navigate = useNavigate();
+  const { authLogout } = useContext(authContext);
 
   const logo = <img src={navLogo} alt="navLogo" />;
   const avatar = localStorage.getItem("avatar");
@@ -64,19 +68,37 @@ const Tabs = () => {
     >
       <MenuItem
         onClick={() => {
-          navigate("/profile");
           handleMenuClose();
+          navigate("/profile");
         }}
       >
+        <IconButton size="small" color="inherit">
+          <AccountCircle />
+        </IconButton>
         Profile
       </MenuItem>
       <MenuItem
         onClick={() => {
-          navigate("/settings/change-username");
           handleMenuClose();
+          navigate("/settings/change-username");
         }}
       >
+        <IconButton size="small" color="inherit">
+          <Settings />
+        </IconButton>
         Settings
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          authLogout();
+          navigate("/login");
+        }}
+      >
+        <IconButton size="small" color="inherit">
+          <Logout />
+        </IconButton>
+        Logout
       </MenuItem>
     </Menu>
   );

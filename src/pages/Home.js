@@ -1,26 +1,8 @@
-import React, { useContext } from "react";
-import { Typography, Button } from "@mui/material";
-import { authContext } from "../auth/useAuth";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { Typography } from "@mui/material";
 
 const Home = () => {
-  const { authLogout } = useContext(authContext);
-  const navigate = useNavigate();
-
-  return (
-    <>
-      <Typography>Welcome!</Typography>
-      <Button
-        type="button"
-        onClick={() => {
-          authLogout();
-          navigate("/login");
-        }}
-      >
-        Logout
-      </Button>
-    </>
-  );
+  return <Typography>Welcome!</Typography>;
 };
 
 export default Home;
