@@ -27,7 +27,7 @@ const Profile = () => {
           color="secondary"
           startIcon={<SettingsIcon />}
           onClick={() => {
-            navigate("/settings/change-username");
+            navigate("/settings");
           }}
           sx={{ position: "absolute", top: "10px", right: "10px" }}
         >

@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import logo from "../../images/logo.png";
 import { login } from "../../api/api";
-import { authContext } from "../../auth/useAuth";
+import { authContext } from "../../context/authContext";
 import CircularProgress from "@mui/material/CircularProgress";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
 import { errorStyles } from "../../styles/styles";

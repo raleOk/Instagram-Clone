@@ -17,11 +17,11 @@ import navLogo from "../../images/navLogo.png";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { Search, SearchIconWrapper, StyledInputBase } from "./TabsStyles";
-import { authContext } from "../../auth/useAuth";
+import { authContext } from "../../context/authContext";
 
 const Tabs = () => {
   const navigate = useNavigate();
-  const { authLogout } = useContext(authContext);
+  const { authLogout, handleRemoveUserData } = useContext(authContext);
 
   const logo = <img src={navLogo} alt="navLogo" />;
   const avatar = localStorage.getItem("avatar");
@@ -80,7 +80,7 @@ const Tabs = () => {
       <MenuItem
         onClick={() => {
           handleMenuClose();
-          navigate("/settings/change-username");
+          navigate("/settings");
         }}
       >
         <IconButton size="small" color="inherit">
@@ -91,6 +91,7 @@ const Tabs = () => {
       <MenuItem
         onClick={() => {
           handleMenuClose();
+          handleRemoveUserData("");
           authLogout();
           navigate("/login");
         }}
