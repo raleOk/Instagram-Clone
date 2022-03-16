@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Register from "./pages/UserForms/Register";
 import Login from "./pages/UserForms/Login";
 import Verify from "./pages/UserForms/Verify";
@@ -12,20 +12,15 @@ import LikedPosts from "./pages/NavigationTabs/LikedPosts";
 import MyPosts from "./pages/NavigationTabs/MyPosts";
 import Profile from "./pages/NavigationTabs/Profile";
 import Settings from "./pages/NavigationTabs/Settings/Settings";
-import ChangeUsername from "./pages/NavigationTabs/Settings/ChangeUsername";
-import ChangeAvatar from "./pages/NavigationTabs/Settings/ChangeAvatar";
-import ChangePassword from "./pages/NavigationTabs/Settings/ChangePassword";
-import DeleteAccount from "./pages/NavigationTabs/Settings/DeleteAccount";
-import NotFound from "./pages/NotFound";
-import Loader from "./components/Loader";
-import { authContext } from "./auth/useAuth";
+import Loader from "./components/Loaders/Loader";
+import { authContext } from "./context/authContext";
 
 const App = () => {
   const { handleAuth, auth } = useContext(authContext);
 
   useEffect(() => {
     handleAuth();
-  }, [handleAuth]);
+  }, []);
 
   if (auth === 0) {
     return <Loader />;
@@ -38,7 +33,7 @@ const App = () => {
         <Route path="verify" element={<Verify />} />
         <Route path="forgot" element={<Forgot />} />
         <Route path="reset" element={<Reset />} />
-        <Route path="/*" element={<NotFound />} />
+        <Route path="/*" element={<Navigate to="/login" replace />} />
       </Routes>
     );
   }
@@ -51,14 +46,9 @@ const App = () => {
           <Route path="liked" element={<LikedPosts />} />
           <Route path="my-posts" element={<MyPosts />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="settings" element={<Settings />}>
-            <Route path="change-username" element={<ChangeUsername />} />
-            <Route path="change-avatar" element={<ChangeAvatar />} />
-            <Route path="change-password" element={<ChangePassword />} />
-            <Route path="delete-account" element={<DeleteAccount />} />
-          </Route>
+          <Route path="settings" element={<Settings />} />
         </Route>
-        <Route path="/*" element={<NotFound />} />
+        <Route path="/*" element={<Navigate to="/" replace />} />
       </Routes>
     );
   }
