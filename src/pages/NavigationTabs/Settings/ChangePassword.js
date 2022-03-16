@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Button, TextField } from "@mui/material";
+import { Grid, Button, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -66,7 +66,6 @@ const ChangeUsername = () => {
       try {
         setIsLoading(true);
         const res = await updatePassword(values);
-        console.log(res);
 
         setIsLoading(false);
         setOpenMessage(true);
@@ -90,6 +89,9 @@ const ChangeUsername = () => {
         alignItems="center"
         spacing={2}
       >
+        <Grid item>
+          <Typography variant="h5">Change password</Typography>
+        </Grid>
         <Grid item>
           <TextField
             id="oldPassword"
