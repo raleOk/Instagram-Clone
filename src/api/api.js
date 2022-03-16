@@ -26,6 +26,7 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+//auth routes
 const register = async data => {
   const formData = new FormData();
   for (let key in data) {
@@ -54,13 +55,15 @@ const reset = async data => {
   return axiosInstance.post("auth/reset", data);
 };
 
-const updateUsername = async (data, userId) => {
-  return axiosInstance.put(`users/${userId}`, data);
-};
-
-const updateAvatar = async (data, userId) => {
+//users routes
+const updateUserData = async (data, userId) => {
   const formData = new FormData();
-  formData.append("avatar", data.avatar);
+  if (data.avatar !== "") {
+    formData.append("avatar", data.avatar);
+  }
+  if (data.username !== "") {
+    formData.append("username", data.username);
+  }
   return axiosInstance.put(`users/${userId}`, formData);
 };
 
@@ -79,8 +82,7 @@ export {
   resend,
   forgot,
   reset,
-  updateUsername,
-  updateAvatar,
+  updateUserData,
   updatePassword,
   deleteUser,
 };
