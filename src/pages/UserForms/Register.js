@@ -20,7 +20,7 @@ const Register = () => {
     setOpenErr(false);
   };
 
-  const supportedFormats = ["image/jpg", "image/jpeg", "image/png", undefined];
+  const supportedFormats = ["image/jpg", "image/jpeg", "image/png"];
   const validationSchema = yup.object({
     username: yup
       .string("Enter your username.")
@@ -51,13 +51,15 @@ const Register = () => {
       .required("Password is required!"),
     avatar: yup
       .mixed("Enter picture")
-      .test("fileType", "Only jpg/jpeg/png files are supported!", value =>
-        supportedFormats.includes(value.type)
+      .test(
+        "fileType",
+        "Only jpg/jpeg/png files are supported!",
+        value => !(value === "") || supportedFormats.includes(value.type)
       )
       .test(
         "fileSize",
         "File is too large",
-        value => !(value === undefined) || value.size > 1_000_000
+        value => !(value === "") || value.size > 1_000_000
       ),
   });
 
@@ -67,7 +69,7 @@ const Register = () => {
       email: "",
       password: "",
       passwordConfirm: "",
-      avatar: 0,
+      avatar: "",
     },
     validationSchema,
     onSubmit: async values => {
