@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Grid, Button, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -7,9 +7,11 @@ import ErrorAlert from "../../../components/Alerts/ErrorAlert";
 import SuccessAlert from "../../../components/Alerts/SuccessAlert";
 import { errorStyles } from "../../../styles/styles";
 import { updateUserData } from "../../../api/api";
+import { authContext } from "../../../context/contextProvider";
 
 const ChangeUserData = () => {
   const userId = localStorage.getItem("id");
+  const { handleUserData } = useContext(authContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -56,9 +58,10 @@ const ChangeUserData = () => {
       try {
         setIsLoading(true);
         const res = await updateUserData(values, userId);
-        const newUsername = res.data.data.username;
 
-        localStorage.setItem("username", newUsername);
+        localStorage.setItem("avatar", res.data.data.avatar);
+        localStorage.setItem("username", res.data.data.username);
+        handleUserData();
         setIsLoading(false);
         setOpenMessage(true);
         return;
@@ -138,7 +141,7 @@ const ChangeUserData = () => {
           <SuccessAlert
             openMessage={openMessage}
             handleClose={handleMessageClose}
-            successMessage="Username successfully changed"
+            successMessage="Changes successfully saved"
           />
         </Grid>
       </Grid>

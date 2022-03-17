@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   AppBar,
@@ -17,14 +17,19 @@ import navLogo from "../../images/navLogo.png";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { Search, SearchIconWrapper, StyledInputBase } from "./TabsStyles";
-import { authContext } from "../../context/authContext";
+import { authContext } from "../../context/contextProvider";
 
 const Tabs = () => {
   const navigate = useNavigate();
-  const { authLogout, handleRemoveUserData } = useContext(authContext);
+  const { authLogout, handleRemoveUserData, userData, handleUserData } =
+    useContext(authContext);
+
+  useEffect(() => {
+    handleUserData();
+  }, [handleUserData]);
 
   const logo = <img src={navLogo} alt="navLogo" />;
-  const avatar = localStorage.getItem("avatar");
+  const avatar = userData.avatar;
 
   //menu state and handlers
   const [anchorEl, setAnchorEl] = useState(null);
