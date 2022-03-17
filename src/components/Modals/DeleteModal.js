@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Typography, Modal, Grid } from "@mui/material";
 import { deleteModalStyles } from "../../styles/styles";
-import { authContext } from "../../context/authContext";
+import { authContext } from "../../context/contextProvider";
 import { deleteUser } from "../../api/api";
 
 const DeleteModal = props => {

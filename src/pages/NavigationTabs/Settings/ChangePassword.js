@@ -65,7 +65,7 @@ const ChangeUsername = () => {
     onSubmit: async values => {
       try {
         setIsLoading(true);
-        const res = await updatePassword(values);
+        await updatePassword(values);
 
         setIsLoading(false);
         setOpenMessage(true);

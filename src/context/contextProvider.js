@@ -1,12 +1,12 @@
 import React, { createContext } from "react";
 import useAuth from "./auth/useAuth";
-import useUserData from "./user/useUserData";
+import useData from "./user/useData";
 
 const authContext = createContext();
 
 const AuthProvider = props => {
   const { auth, handleAuth, authLogin, authLogout } = useAuth();
-  const { userData, handleAvatar, handleRemoveUserData } = useUserData();
+  const { userData, handleUserData, handleRemoveUserData } = useData();
 
   return (
     <authContext.Provider
@@ -16,7 +16,7 @@ const AuthProvider = props => {
         authLogin,
         authLogout,
         userData,
-        handleAvatar,
+        handleUserData,
         handleRemoveUserData,
       }}
     >
