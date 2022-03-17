@@ -13,14 +13,14 @@ import MyPosts from "./pages/NavigationTabs/MyPosts";
 import Profile from "./pages/NavigationTabs/Profile";
 import Settings from "./pages/NavigationTabs/Settings/Settings";
 import Loader from "./components/Loaders/Loader";
-import { authContext } from "./context/authContext";
+import { authContext } from "./context/contextProvider";
 
 const App = () => {
   const { handleAuth, auth } = useContext(authContext);
 
   useEffect(() => {
     handleAuth();
-  }, []);
+  }, [handleAuth]);
 
   if (auth === 0) {
     return <Loader />;
