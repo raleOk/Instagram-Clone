@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Grid,
@@ -9,10 +9,10 @@ import {
   Box,
 } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { UserContext } from "../../context/userContext";
 
 const Profile = () => {
-  const username = localStorage.getItem("username");
-  const avatar = localStorage.getItem("avatar");
+  const userContext = useContext(UserContext);
   const navigate = useNavigate();
   const [bio, setBio] = useState("");
 
@@ -43,10 +43,13 @@ const Profile = () => {
         sx={{ mt: 1 }}
       >
         <Grid item>
-          <Avatar src={avatar} sx={{ width: 140, height: 140 }} />
+          <Avatar
+            src={userContext.user.avatar}
+            sx={{ width: 140, height: 140 }}
+          />
         </Grid>
         <Grid item>
-          <Typography variant="h5">{username}</Typography>
+          <Typography variant="h5">{userContext.user.username}</Typography>
         </Grid>
         <Grid item>
           <TextField

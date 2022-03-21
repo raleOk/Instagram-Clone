@@ -1,25 +1,34 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Typography, Modal, Grid } from "@mui/material";
 import { deleteModalStyles } from "../../styles/styles";
-import { authContext } from "../../context/contextProvider";
 import { deleteUser } from "../../api/api";
+import { UserContext } from "../../context/userContext";
+import ErrorAlert from "../Alerts/ErrorAlert";
 
 const DeleteModal = props => {
-  const { authLogout, handleRemoveUserData } = useContext(authContext);
+  const userContext = useContext(UserContext);
   const navigate = useNavigate();
-  const userId = localStorage.getItem("id");
+
   const { showModal, handleCloseModal } = props;
+
+  const [openErr, setOpenErr] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
+  const handleErrMessageClose = () => {
+    setOpenErr(false);
+  };
 
   const handleDelete = async () => {
     try {
-      await deleteUser(userId);
-      authLogout();
-      handleRemoveUserData("");
+      await deleteUser(userContext.user._id);
+      userContext.logout();
       navigate("/login");
       return;
     } catch (err) {
-      console.log(err);
+      //will add dynamic err msgs
+      setErrMessage("Something went wrong!");
+      setOpenErr(true);
+      return;
     }
   };
 
@@ -72,6 +81,13 @@ const DeleteModal = props => {
                 No, go back
               </Button>
             </Grid>
+          </Grid>
+          <Grid item>
+            <ErrorAlert
+              openErr={openErr}
+              errMessage={errMessage}
+              handleClose={handleErrMessageClose}
+            />
           </Grid>
         </Grid>
       </Box>

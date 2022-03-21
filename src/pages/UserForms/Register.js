@@ -76,10 +76,11 @@ const Register = () => {
       try {
         setIsLoading(true);
         await register(values);
-        localStorage.setItem("userEmail", values.email);
 
         setIsLoading(false);
-        navigate("/verify");
+        navigate("/verify", {
+          state: { from: "/register", email: values.email },
+        });
         return;
       } catch (err) {
         if (err.response.data.errors === undefined) {

@@ -9,7 +9,6 @@ const DeleteAccount = () => {
   const handleShowModal = () => {
     setShowModal(true);
   };
-
   const handleCloseModal = () => {
     setShowModal(false);
   };

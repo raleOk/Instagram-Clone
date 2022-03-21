@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Register from "./pages/UserForms/Register";
 import Login from "./pages/UserForms/Login";
@@ -13,19 +13,16 @@ import MyPosts from "./pages/NavigationTabs/MyPosts";
 import Profile from "./pages/NavigationTabs/Profile";
 import Settings from "./pages/NavigationTabs/Settings/Settings";
 import Loader from "./components/Loaders/Loader";
-import { authContext } from "./context/contextProvider";
+import { UserContext } from "./context/userContext";
 
 const App = () => {
-  const { handleAuth, auth } = useContext(authContext);
+  const { user, isLoading } = useContext(UserContext);
 
-  useEffect(() => {
-    handleAuth();
-  }, [handleAuth]);
-
-  if (auth === 0) {
+  if (isLoading) {
     return <Loader />;
   }
-  if (auth === -1) {
+
+  if (!user) {
     return (
       <Routes>
         <Route path="register" element={<Register />} />
@@ -37,7 +34,8 @@ const App = () => {
       </Routes>
     );
   }
-  if (auth === 1) {
+
+  if (user) {
     return (
       <Routes>
         <Route path="/" element={<Navbar />}>

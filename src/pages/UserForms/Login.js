@@ -5,13 +5,13 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import logo from "../../images/logo.png";
 import { login } from "../../api/api";
-import { authContext } from "../../context/contextProvider";
+import { UserContext } from "../../context/userContext";
 import CircularProgress from "@mui/material/CircularProgress";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
 import { errorStyles } from "../../styles/styles";
 
 const Login = () => {
-  const { authLogin } = useContext(authContext);
+  const userContext = useContext(UserContext);
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -52,23 +52,19 @@ const Login = () => {
       try {
         setIsLoading(true);
         const response = await login(values);
-        const token = response.data.token;
-        const { _id, username, avatar } = response.data.user;
+        const { user, token } = response.data;
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("id", _id);
-        localStorage.setItem("username", username);
-        localStorage.setItem("avatar", avatar);
-        localStorage.removeItem("userEmail");
-        authLogin();
+        userContext.login({ user, token });
         setIsLoading(false);
         navigate("/");
         return;
       } catch (err) {
         if (err.response.status === 401) {
-          localStorage.setItem("userEmail", values.email);
+          navigate("/verify", {
+            //'from' is set to /register on purpose because the functionality in /verify is the same for /login and /register
+            state: { from: "/register", email: values.email },
+          });
           setIsLoading(false);
-          navigate("/verify");
           return;
         }
         setIsLoading(false);

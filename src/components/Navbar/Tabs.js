@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   AppBar,
@@ -17,19 +17,13 @@ import navLogo from "../../images/navLogo.png";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { Search, SearchIconWrapper, StyledInputBase } from "./TabsStyles";
-import { authContext } from "../../context/contextProvider";
+import { UserContext } from "../../context/userContext";
 
 const Tabs = () => {
   const navigate = useNavigate();
-  const { authLogout, handleRemoveUserData, userData, handleUserData } =
-    useContext(authContext);
-
-  useEffect(() => {
-    handleUserData();
-  }, [handleUserData]);
+  const userContext = useContext(UserContext);
 
   const logo = <img src={navLogo} alt="navLogo" />;
-  const avatar = userData.avatar;
 
   //menu state and handlers
   const [anchorEl, setAnchorEl] = useState(null);
@@ -96,8 +90,7 @@ const Tabs = () => {
       <MenuItem
         onClick={() => {
           handleMenuClose();
-          handleRemoveUserData("");
-          authLogout();
+          userContext.logout();
           navigate("/login");
         }}
       >
@@ -214,7 +207,7 @@ const Tabs = () => {
               <Typography textAlign="center">Create post</Typography>
             </MenuItem>
             <IconButton size="large" edge="end" onClick={handleProfileMenuOpen}>
-              <Avatar src={avatar} alt="avatar" />
+              <Avatar src={userContext.user.avatar} alt="avatar" />
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

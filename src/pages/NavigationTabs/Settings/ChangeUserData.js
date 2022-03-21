@@ -7,11 +7,10 @@ import ErrorAlert from "../../../components/Alerts/ErrorAlert";
 import SuccessAlert from "../../../components/Alerts/SuccessAlert";
 import { errorStyles } from "../../../styles/styles";
 import { updateUserData } from "../../../api/api";
-import { authContext } from "../../../context/contextProvider";
+import { UserContext } from "../../../context/userContext";
 
 const ChangeUserData = () => {
-  const userId = localStorage.getItem("id");
-  const { handleUserData } = useContext(authContext);
+  const userContext = useContext(UserContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -57,18 +56,17 @@ const ChangeUserData = () => {
     onSubmit: async values => {
       try {
         setIsLoading(true);
-        const res = await updateUserData(values, userId);
+        const response = await updateUserData(values, userContext.user._id);
+        const data = response.data;
 
-        localStorage.setItem("avatar", res.data.data.avatar);
-        localStorage.setItem("username", res.data.data.username);
-        handleUserData();
+        userContext.update(data);
         setIsLoading(false);
         setOpenMessage(true);
         return;
       } catch (err) {
-        const errMsg = err.response.data.errors;
         setIsLoading(false);
-        setErrMessage(errMsg);
+        //will add dynamic err msgs
+        setErrMessage("Something went wrong!");
         setOpenErr(true);
         return;
       }

@@ -5,17 +5,16 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import logo from "../../images/logo.png";
 import { verify, resend } from "../../api/api";
-import { authContext } from "../../context/contextProvider";
 import CircularProgress from "@mui/material/CircularProgress";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
 import SuccessAlert from "../../components/Alerts/SuccessAlert";
 import { errorStyles } from "../../styles/styles";
+import { UserContext } from "../../context/userContext";
 
 const Verify = () => {
-  const { authLogin } = useContext(authContext);
+  const userContext = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const userEmail = localStorage.getItem("userEmail");
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -45,20 +44,14 @@ const Verify = () => {
     },
     validationSchema,
     onSubmit: async values => {
-      if (location.state === null) {
+      if (location.state.from === "/register") {
         try {
           setIsLoading(true);
-          values.email = userEmail;
+          values.email = location.state.email;
           const response = await verify(values);
-          const token = response.data.token;
-          const { _id, username, avatar } = response.data.user;
+          const { user, token } = response.data;
 
-          localStorage.setItem("token", token);
-          localStorage.setItem("id", _id);
-          localStorage.setItem("username", username);
-          localStorage.setItem("avatar", avatar);
-          localStorage.removeItem("userEmail");
-          authLogin();
+          userContext.login({ user, token });
           setIsLoading(false);
           navigate("/");
           return;
@@ -82,9 +75,9 @@ const Verify = () => {
           setIsLoading(true);
           values.email = location.state.email;
           const response = await verify(values);
-          const token = response.data.token;
+          const { token } = response.data;
 
-          localStorage.setItem("token", token);
+          userContext.login({ user: null, token });
           navigate("/reset");
           setIsLoading(false);
           return;
@@ -106,28 +99,15 @@ const Verify = () => {
   });
 
   const handleResend = async () => {
-    if (location.state === null) {
-      try {
-        await resend({ email: userEmail });
-        setOpenMessage(true);
-        return;
-      } catch (err) {
-        setErrMessage(err.response.data.message);
-        setOpenErr(true);
-        return;
-      }
-    }
-
-    if (location.state.from === "/forgot") {
-      try {
-        await resend({ email: location.state.email });
-        setOpenMessage(true);
-      } catch (err) {
-        setErrMessage(err.response.data.message);
-        setOpenErr(true);
-      }
+    try {
+      await resend({ email: location.state.email });
+      setOpenMessage(true);
+    } catch (err) {
+      setErrMessage(err.response.data.message);
+      setOpenErr(true);
     }
   };
+
   return (
     <Grid
       container
