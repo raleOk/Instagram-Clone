@@ -2,13 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import { AuthProvider } from "./auth/useAuth";
+import { UserProvider } from "./context/userContext";
 
 ReactDOM.render(
   <BrowserRouter>
-    <AuthProvider>
+    <UserProvider>
       <App />
-    </AuthProvider>
+    </UserProvider>
   </BrowserRouter>,
 
   document.getElementById("root")

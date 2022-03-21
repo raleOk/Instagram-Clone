@@ -1,18 +1,7 @@
-import React, { useContext } from "react";
-import { Typography, Button } from "@mui/material";
-import { authContext } from "../auth/useAuth";
+import React from "react";
 
 const Home = () => {
-  const { authLogout } = useContext(authContext);
-
-  return (
-    <>
-      <Typography>Welcome!</Typography>
-      <Button type="button" onClick={authLogout}>
-        Logout
-      </Button>
-    </>
-  );
+  return <div>home</div>;
 };
 
 export default Home;

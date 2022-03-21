@@ -3,16 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { Grid, Button, TextField, Link } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import logo from "../images/logo.png";
-import { register } from "../api/api";
+import logo from "../../images/logo.png";
+import { register } from "../../api/api";
 import CircularProgress from "@mui/material/CircularProgress";
-import ErrorAlert from "../components/ErrorAlert";
+import ErrorAlert from "../../components/Alerts/ErrorAlert";
+import { errorStyles } from "../../styles/styles";
 
 const Register = () => {
   const navigate = useNavigate();
-  const errorStyles = {
-    sx: { width: 180 },
-  };
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,7 +20,7 @@ const Register = () => {
     setOpenErr(false);
   };
 
-  const supportedFormats = ["image/jpg", "image/jpeg", "image/png", undefined];
+  const supportedFormats = ["image/jpg", "image/jpeg", "image/png"];
   const validationSchema = yup.object({
     username: yup
       .string("Enter your username.")
@@ -53,13 +51,15 @@ const Register = () => {
       .required("Password is required!"),
     avatar: yup
       .mixed("Enter picture")
-      .test("fileType", "Only jpg/jpeg/png files are supported!", value =>
-        supportedFormats.includes(value.type)
+      .test(
+        "fileType",
+        "Only jpg/jpeg/png files are supported!",
+        value => !(value === "") || supportedFormats.includes(value.type)
       )
       .test(
         "fileSize",
         "File is too large",
-        value => !(value === undefined) || value.size > 1_000_000
+        value => !(value === "") || value.size > 1_000_000
       ),
   });
 
@@ -69,17 +69,18 @@ const Register = () => {
       email: "",
       password: "",
       passwordConfirm: "",
-      avatar: 0,
+      avatar: "",
     },
     validationSchema,
     onSubmit: async values => {
       try {
         setIsLoading(true);
         await register(values);
-        localStorage.setItem("userEmail", values.email);
 
-        navigate("/verify");
         setIsLoading(false);
+        navigate("/verify", {
+          state: { from: "/register", email: values.email },
+        });
         return;
       } catch (err) {
         if (err.response.data.errors === undefined) {

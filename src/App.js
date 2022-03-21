@@ -1,36 +1,55 @@
-import React, { useEffect, useContext } from "react";
-import { Routes, Route } from "react-router-dom";
-import ProtectedRoutes from "./auth/ProtectedRoutes";
-import UnprotectedRoutes from "./auth/UnprotectedRoutes";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import Verify from "./pages/Verify";
-import Forgot from "./pages/Forgot";
-import Reset from "./pages/Reset";
+import React, { useContext } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Register from "./pages/UserForms/Register";
+import Login from "./pages/UserForms/Login";
+import Verify from "./pages/UserForms/Verify";
+import Forgot from "./pages/UserForms/Forgot";
+import Reset from "./pages/UserForms/Reset";
 import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
-import { authContext } from "./auth/useAuth";
+import Navbar from "./components/Navbar/Navbar";
+import CreatePost from "./pages/NavigationTabs/CreatePost";
+import LikedPosts from "./pages/NavigationTabs/LikedPosts";
+import MyPosts from "./pages/NavigationTabs/MyPosts";
+import Profile from "./pages/NavigationTabs/Profile";
+import Settings from "./pages/NavigationTabs/Settings/Settings";
+import Loader from "./components/Loaders/Loader";
+import { UserContext } from "./context/userContext";
 
 const App = () => {
-  const { handleAuth } = useContext(authContext);
-  useEffect(() => {
-    handleAuth();
-  }, [handleAuth]);
-  return (
-    <Routes>
-      <Route path="/" element={<ProtectedRoutes />}>
-        <Route path="/" element={<Home />} exact />
-      </Route>
-      <Route path="/" element={<UnprotectedRoutes />}>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/verify" element={<Verify />} />
-        <Route path="/forgot" element={<Forgot />} />
-        <Route path="/reset" element={<Reset />} />
-      </Route>
-      <Route path="/*" element={<NotFound />} />
-    </Routes>
-  );
+  const { user, isLoading } = useContext(UserContext);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (!user) {
+    return (
+      <Routes>
+        <Route path="register" element={<Register />} />
+        <Route path="login" element={<Login />} />
+        <Route path="verify" element={<Verify />} />
+        <Route path="forgot" element={<Forgot />} />
+        <Route path="reset" element={<Reset />} />
+        <Route path="/*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    );
+  }
+
+  if (user) {
+    return (
+      <Routes>
+        <Route path="/" element={<Navbar />}>
+          <Route path="/" element={<Home />} exact />
+          <Route path="create" element={<CreatePost />} />
+          <Route path="liked" element={<LikedPosts />} />
+          <Route path="my-posts" element={<MyPosts />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
+        <Route path="/*" element={<Navigate to="/" replace />} />
+      </Routes>
+    );
+  }
 };
 
 export default App;

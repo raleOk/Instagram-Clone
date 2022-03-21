@@ -3,18 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { Grid, Button, TextField, Link } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import logo from "../images/logo.png";
-import { login } from "../api/api";
-import { authContext } from "../auth/useAuth";
+import logo from "../../images/logo.png";
+import { login } from "../../api/api";
+import { UserContext } from "../../context/userContext";
 import CircularProgress from "@mui/material/CircularProgress";
-import ErrorAlert from "../components/ErrorAlert";
+import ErrorAlert from "../../components/Alerts/ErrorAlert";
+import { errorStyles } from "../../styles/styles";
 
 const Login = () => {
-  const { authLogin } = useContext(authContext);
+  const userContext = useContext(UserContext);
   const navigate = useNavigate();
-  const errorStyles = {
-    sx: { width: 180 },
-  };
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -54,19 +52,18 @@ const Login = () => {
       try {
         setIsLoading(true);
         const response = await login(values);
-        const data = await response.data;
-        const token = data.token;
+        const { user, token } = response.data;
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("userEmail", values.email);
-        authLogin();
-        navigate("/");
+        userContext.login({ user, token });
         setIsLoading(false);
+        navigate("/");
         return;
       } catch (err) {
         if (err.response.status === 401) {
-          localStorage.setItem("userEmail", values.email);
-          navigate("/verify");
+          navigate("/verify", {
+            //'from' is set to /register on purpose because the functionality in /verify is the same for /login and /register
+            state: { from: "/register", email: values.email },
+          });
           setIsLoading(false);
           return;
         }

@@ -3,16 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { Grid, Button, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import logo from "../images/logo.png";
-import { reset } from "../api/api";
+import logo from "../../images/logo.png";
+import { forgot } from "../../api/api";
 import CircularProgress from "@mui/material/CircularProgress";
-import ErrorAlert from "../components/ErrorAlert";
+import ErrorAlert from "../../components/Alerts/ErrorAlert";
+import { errorStyles } from "../../styles/styles";
 
-const Reset = () => {
+const Forgot = () => {
   const navigate = useNavigate();
-  const errorStyles = {
-    sx: { width: 180 },
-  };
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,38 +21,25 @@ const Reset = () => {
   };
 
   const validationSchema = yup.object({
-    password: yup
-      .string("Enter your password")
-      .min(8, "Password should be at least 8 characters long!")
-      .matches(
-        /[a-z]/,
-        "Password should have at least one lowercase character!"
-      )
-      .matches(
-        /[A-Z]/,
-        "Password should have at least one uppercase character!"
-      )
-      .matches(/[0-9]/, "Password should have at least number!")
-      .required("Password is required!"),
-    passwordConfirm: yup
-      .string("Confirm password")
-      .oneOf([yup.ref("password"), null], "Passwords must match!")
-      .required("Password is required!"),
+    email: yup
+      .string("Enter your email")
+      .email("Enter a valid email")
+      .required("Email is required!"),
   });
 
   const formik = useFormik({
     initialValues: {
-      password: "",
-      passwordConfirm: "",
+      email: "",
     },
     validationSchema,
     onSubmit: async values => {
       try {
         setIsLoading(true);
-        await reset(values);
-
-        navigate("/login");
+        await forgot(values);
         setIsLoading(false);
+        navigate("/verify", {
+          state: { from: "/forgot", email: values.email },
+        });
         return;
       } catch (err) {
         setIsLoading(false);
@@ -82,39 +67,17 @@ const Reset = () => {
             direction="column"
             justifyContent="center"
             alignItems="center"
-            spacing={2}
+            spacing={3}
           >
             <Grid item>
               <TextField
-                id="password"
-                name="password"
-                label="Password"
-                type="password"
-                value={formik.values.password}
+                id="email"
+                name="email"
+                label="Email"
+                value={formik.values.email}
                 onChange={formik.handleChange}
-                error={
-                  formik.touched.password && Boolean(formik.errors.password)
-                }
-                helperText={formik.touched.password && formik.errors.password}
-                FormHelperTextProps={errorStyles}
-              />
-            </Grid>
-            <Grid item>
-              <TextField
-                id="passwordConfirm"
-                name="passwordConfirm"
-                label="Confirm password"
-                type="password"
-                value={formik.values.passwordConfirm}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.passwordConfirm &&
-                  Boolean(formik.errors.passwordConfirm)
-                }
-                helperText={
-                  formik.touched.passwordConfirm &&
-                  formik.errors.passwordConfirm
-                }
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
                 FormHelperTextProps={errorStyles}
               />
             </Grid>
@@ -125,7 +88,7 @@ const Reset = () => {
             ) : (
               <Grid item>
                 <Button variant="outlined" type="submit" size="small">
-                  Reset password
+                  Send reset code
                 </Button>
               </Grid>
             )}
@@ -143,4 +106,4 @@ const Reset = () => {
   );
 };
 
-export default Reset;
+export default Forgot;
