@@ -9,7 +9,7 @@ import {
   Box,
 } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { UserContext } from "../../context/userContext";
+import { UserContext } from "../../../context/userContext";
 
 const Profile = () => {
   const userContext = useContext(UserContext);
