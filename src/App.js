@@ -46,7 +46,7 @@ const App = () => {
           <Route path="my-posts" element={<MyPosts />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
-          <Route path="users" element={<UserList />} />
+          <Route path="users/*" element={<UserList />} />
         </Route>
         <Route path="/*" element={<Navigate to="/" replace />} />
       </Routes>
