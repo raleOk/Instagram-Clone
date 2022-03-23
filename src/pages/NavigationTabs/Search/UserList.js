@@ -12,27 +12,43 @@ import {
   Typography,
   Grid,
   Container,
+  Pagination,
 } from "@mui/material";
 import Loader from "../../../components/Loaders/Loader";
 
 const UserList = () => {
+  //user list state
   const [userList, setUserList] = useState([]);
-  const [searchParams] = useSearchParams({});
 
+  //url params state and variables
+  const [searchParams, setSearchParams] = useSearchParams({});
+
+  const search = searchParams.get("search");
+  const page = searchParams.get("page");
+  const limit = searchParams.get("limit");
+
+  //loading state
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const searchTerm = searchParams.get("search");
-    const page = searchParams.get("page");
-    const limit = searchParams.get("limit");
+  //pagination state and handler
+  const [paginationValues, setPaginationValues] = useState({});
 
+  const handlePage = (event, value) => {
+    setPaginationValues(prevState => {
+      return { ...prevState, page: value };
+    });
+    setSearchParams({ search, limit, page: value });
+  };
+
+  useEffect(() => {
     const getUserData = async () => {
       try {
         setIsLoading(true);
-        const response = await getUsers(searchTerm, page, limit);
-        const { users } = response.data;
+        const response = await getUsers(search, page, limit);
+        const { users, pagination } = response.data;
 
         setUserList(users);
+        setPaginationValues(pagination);
         setIsLoading(false);
         return;
       } catch (err) {
@@ -41,7 +57,7 @@ const UserList = () => {
       }
     };
     getUserData();
-  }, [searchParams]);
+  }, [searchParams, search, page, limit]);
 
   return (
     <Grid
@@ -86,6 +102,15 @@ const UserList = () => {
                 );
               })}
             </List>
+          </Grid>
+          <Grid item>
+            <Pagination
+              count={paginationValues.pages}
+              page={paginationValues.page}
+              onChange={handlePage}
+              spacing={2}
+              color="secondary"
+            />
           </Grid>
         </>
       )}
