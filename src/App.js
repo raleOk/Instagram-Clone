@@ -9,7 +9,6 @@ import Home from "./pages/Home";
 import Navbar from "./components/Navbar/Navbar";
 import CreatePost from "./pages/NavigationTabs/Posts/CreatePost";
 import LikedPosts from "./pages/NavigationTabs/Posts/LikedPosts";
-import MyPosts from "./pages/NavigationTabs/Posts/MyPosts";
 import Profile from "./pages/NavigationTabs/Profile/Profile";
 import Settings from "./pages/NavigationTabs/Settings/Settings";
 import Loader from "./components/Loaders/Loader";
@@ -43,7 +42,6 @@ const App = () => {
           <Route path="/" element={<Home />} exact />
           <Route path="create" element={<CreatePost />} />
           <Route path="liked" element={<LikedPosts />} />
-          <Route path="my-posts" element={<MyPosts />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
           <Route path="users/*" element={<UserList />} />

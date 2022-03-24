@@ -118,14 +118,6 @@ const Tabs = () => {
       onClose={handleMobileMenuClose}
     >
       <MenuItem
-        key="My posts"
-        onClick={() => {
-          navigate("/my-posts");
-        }}
-      >
-        My Posts
-      </MenuItem>
-      <MenuItem
         key="likedPosts"
         onClick={() => {
           navigate("/liked");
@@ -173,14 +165,6 @@ const Tabs = () => {
           <SearchBar />
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <MenuItem
-              key="My posts"
-              onClick={() => {
-                navigate("/my-posts");
-              }}
-            >
-              <Typography textAlign="center">My Posts</Typography>
-            </MenuItem>
             <MenuItem
               key="likedPosts"
               onClick={() => {

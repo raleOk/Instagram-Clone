@@ -1,5 +1,12 @@
 import React, { useState, useContext } from "react";
-import { Grid, Button, TextField, Typography } from "@mui/material";
+import {
+  Grid,
+  Button,
+  TextField,
+  Avatar,
+  Typography,
+  Divider,
+} from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -49,7 +56,7 @@ const ChangeUserData = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
+      username: `${userContext.user.username}`,
       avatar: "",
     },
     validationSchema,
@@ -82,24 +89,40 @@ const ChangeUserData = () => {
         justifyContent="center"
         alignItems="center"
         spacing={2}
-        sx={{ mt: 2 }}
       >
         <Grid item>
-          <Typography variant="h4">Settings</Typography>
+          <Divider sx={{ width: 600 }} textAlign="center">
+            <Typography variant="h6">Change avatar & username</Typography>
+          </Divider>
         </Grid>
-        <Grid item>
-          <TextField
-            id="avatar"
-            name="avatar"
-            type="file"
-            variant="standard"
-            onChange={e => {
-              formik.values.avatar = e.target.files[0];
-            }}
-            error={formik.touched.avatar && Boolean(formik.errors.avatar)}
-            helperText={formik.touched.avatar && formik.errors.avatar}
-            FormHelperTextProps={errorStyles}
-          />
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={3}
+          item
+        >
+          <Grid item>
+            <Avatar
+              src={userContext.user.avatar}
+              sx={{ width: 140, height: 140 }}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              id="avatar"
+              name="avatar"
+              type="file"
+              variant="standard"
+              onChange={e => {
+                formik.values.avatar = e.target.files[0];
+              }}
+              error={formik.touched.avatar && Boolean(formik.errors.avatar)}
+              helperText={formik.touched.avatar && formik.errors.avatar}
+              FormHelperTextProps={errorStyles}
+            />
+          </Grid>
         </Grid>
         <Grid item>
           <TextField
@@ -124,7 +147,7 @@ const ChangeUserData = () => {
               color="secondary"
               size="small"
             >
-              Save
+              Save Changes
             </Button>
           </Grid>
         )}
