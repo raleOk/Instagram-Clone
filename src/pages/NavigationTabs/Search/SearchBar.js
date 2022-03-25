@@ -1,7 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import { Search, SearchIconWrapper, StyledInputBase } from "./SearchBarStyles";
+import {
+  Search,
+  SearchIconWrapper,
+  StyledInputBase,
+} from "../../../styles/SearchBarStyles";
 
 const SearchBar = () => {
   const navigate = useNavigate();

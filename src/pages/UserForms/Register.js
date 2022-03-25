@@ -7,6 +7,7 @@ import logo from "../../images/logo.png";
 import { register } from "../../api/api";
 import CircularProgress from "@mui/material/CircularProgress";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
+import FileUpload from "../../components/FileUpload/FIleUpload";
 import { errorStyles } from "../../styles/styles";
 
 const Register = () => {
@@ -18,6 +19,10 @@ const Register = () => {
   const [errMessage, setErrMessage] = useState("");
   const handleErrMessageClose = () => {
     setOpenErr(false);
+  };
+
+  const handlePreview = file => {
+    formik.values.avatar = file;
   };
 
   const supportedFormats = ["image/jpg", "image/jpeg", "image/png"];
@@ -110,6 +115,16 @@ const Register = () => {
         <img src={logo} alt="logo" />
       </Grid>
       <Grid item>
+        <FileUpload
+          id="avatar"
+          name="avatar"
+          handlePreview={handlePreview}
+          error={formik.touched.avatar && Boolean(formik.errors.avatar)}
+          helperText={formik.touched.avatar && formik.errors.avatar}
+          FormHelperTextProps={errorStyles}
+        />
+      </Grid>
+      <Grid item>
         <form onSubmit={formik.handleSubmit}>
           <Grid
             container
@@ -176,20 +191,6 @@ const Register = () => {
                   formik.touched.passwordConfirm &&
                   formik.errors.passwordConfirm
                 }
-                FormHelperTextProps={errorStyles}
-              />
-            </Grid>
-            <Grid item>
-              <TextField
-                id="avatar"
-                name="avatar"
-                type="file"
-                variant="standard"
-                onChange={e => {
-                  formik.values.avatar = e.target.files[0];
-                }}
-                error={formik.touched.avatar && Boolean(formik.errors.avatar)}
-                helperText={formik.touched.avatar && formik.errors.avatar}
                 FormHelperTextProps={errorStyles}
               />
             </Grid>
