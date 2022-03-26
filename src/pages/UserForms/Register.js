@@ -114,7 +114,7 @@ const Register = () => {
       <Grid item>
         <img src={logo} alt="logo" />
       </Grid>
-      <Grid item>
+      <Grid item container direction="row" justifyContent="center">
         <FileUpload
           id="avatar"
           name="avatar"
