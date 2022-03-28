@@ -1,12 +1,5 @@
 import React, { useState, useContext } from "react";
-import {
-  Grid,
-  Button,
-  TextField,
-  Avatar,
-  Typography,
-  Divider,
-} from "@mui/material";
+import { Grid, Button, TextField, Typography, Divider } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -15,6 +8,7 @@ import SuccessAlert from "../../../components/Alerts/SuccessAlert";
 import { errorStyles } from "../../../styles/styles";
 import { updateUserData } from "../../../api/api";
 import { UserContext } from "../../../context/userContext";
+import AvatarUpload from "../../../components/AvatarUpload/AvatarUpload";
 
 const ChangeUserData = () => {
   const userContext = useContext(UserContext);
@@ -80,7 +74,10 @@ const ChangeUserData = () => {
     },
   });
 
-  //todo; add drag and drop avatar features with preview
+  const handlePreview = file => {
+    formik.values.avatar = file;
+  };
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Grid
@@ -95,34 +92,16 @@ const ChangeUserData = () => {
             <Typography variant="h6">Change avatar & username</Typography>
           </Divider>
         </Grid>
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          spacing={3}
-          item
-        >
-          <Grid item>
-            <Avatar
-              src={userContext.user.avatar}
-              sx={{ width: 140, height: 140 }}
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              id="avatar"
-              name="avatar"
-              type="file"
-              variant="standard"
-              onChange={e => {
-                formik.values.avatar = e.target.files[0];
-              }}
-              error={formik.touched.avatar && Boolean(formik.errors.avatar)}
-              helperText={formik.touched.avatar && formik.errors.avatar}
-              FormHelperTextProps={errorStyles}
-            />
-          </Grid>
+        <Grid item>
+          <AvatarUpload
+            id="avatar"
+            name="avatar"
+            handlePreview={handlePreview}
+            initialState={userContext.user.avatar}
+            error={formik.touched.avatar && Boolean(formik.errors.avatar)}
+            helperText={formik.touched.avatar && formik.errors.avatar}
+            FormHelperTextProps={errorStyles}
+          />
         </Grid>
         <Grid item>
           <TextField

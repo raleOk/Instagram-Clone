@@ -10,18 +10,18 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { useDropzone } from "react-dropzone";
 
-const FileUpload = props => {
-  const { handlePreview } = props;
-  const [filePreview, setFilePreview] = useState([]);
+const AvatarUpload = props => {
+  const { handlePreview, initialState } = props;
+
+  const [filePreview, setFilePreview] = useState(initialState);
 
   const onDrop = useCallback(
     files => {
-      setFilePreview(
-        Object.assign(files[0], {
-          preview: URL.createObjectURL(files[0]),
-        })
-      );
-      handlePreview(files[0]);
+      const avatarPath = Object.assign(files[0], {
+        preview: URL.createObjectURL(files[0]),
+      });
+      setFilePreview(avatarPath.preview);
+      handlePreview(avatarPath);
     },
     [handlePreview]
   );
@@ -33,12 +33,13 @@ const FileUpload = props => {
   });
 
   const handleRemovePreview = () => {
-    setFilePreview([]);
+    setFilePreview(null);
+    handlePreview(null);
   };
 
   return (
-    <>
-      {filePreview.length === 0 ? (
+    <Grid item container direction="row" justifyContent="center">
+      {filePreview === null ? (
         <Grid item>
           <Avatar
             sx={{
@@ -71,7 +72,7 @@ const FileUpload = props => {
                   width: 150,
                   height: 150,
                 }}
-                src={filePreview.preview}
+                src={filePreview}
                 {...getRootProps()}
               >
                 <Input {...getInputProps()} />
@@ -89,8 +90,8 @@ const FileUpload = props => {
           </Grid>
         </>
       )}
-    </>
+    </Grid>
   );
 };
 
-export default FileUpload;
+export default AvatarUpload;

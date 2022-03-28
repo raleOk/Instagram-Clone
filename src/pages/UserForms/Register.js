@@ -7,7 +7,7 @@ import logo from "../../images/logo.png";
 import { register } from "../../api/api";
 import CircularProgress from "@mui/material/CircularProgress";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
-import FileUpload from "../../components/FileUpload/FIleUpload";
+import AvatarUpload from "../../components/AvatarUpload/AvatarUpload";
 import { errorStyles } from "../../styles/styles";
 
 const Register = () => {
@@ -114,11 +114,12 @@ const Register = () => {
       <Grid item>
         <img src={logo} alt="logo" />
       </Grid>
-      <Grid item container direction="row" justifyContent="center">
-        <FileUpload
+      <Grid item>
+        <AvatarUpload
           id="avatar"
           name="avatar"
           handlePreview={handlePreview}
+          initialState={null}
           error={formik.touched.avatar && Boolean(formik.errors.avatar)}
           helperText={formik.touched.avatar && formik.errors.avatar}
           FormHelperTextProps={errorStyles}
