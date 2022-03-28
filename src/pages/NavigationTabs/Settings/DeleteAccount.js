@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography, Divider } from "@mui/material";
 import DeleteModal from "../../../components/Modals/DeleteModal";
 
 const DeleteAccount = () => {
@@ -22,7 +22,9 @@ const DeleteAccount = () => {
       spacing={1}
     >
       <Grid item>
-        <Typography variant="h5">Delete account</Typography>
+        <Divider sx={{ width: 600 }} textAlign="center">
+          <Typography variant="h6">Delete account</Typography>
+        </Divider>
       </Grid>
       <Grid item>
         <Typography variant="h6">

@@ -1,24 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Grid,
-  Avatar,
-  Typography,
-  TextField,
-  Button,
-  Box,
-} from "@mui/material";
+import { Grid, Avatar, Typography, Button, Box } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { UserContext } from "../../context/userContext";
+import { UserContext } from "../../../context/userContext";
+import MyPosts from "../Posts/MyPosts";
 
 const Profile = () => {
   const userContext = useContext(UserContext);
   const navigate = useNavigate();
-  const [bio, setBio] = useState("");
 
-  const handleBio = event => {
-    setBio(event.target.value);
-  };
   return (
     <>
       <Box sx={{ position: "relative" }}>
@@ -51,16 +41,8 @@ const Profile = () => {
         <Grid item>
           <Typography variant="h5">{userContext.user.username}</Typography>
         </Grid>
-        <Grid item>
-          <TextField
-            multiline
-            minRows={4}
-            placeholder="Tell us something about yourself."
-            label=""
-            value={bio}
-            onChange={handleBio}
-            inputProps={{ maxLength: 122 }}
-          />
+        <Grid item marginTop={5}>
+          <MyPosts />
         </Grid>
       </Grid>
     </>

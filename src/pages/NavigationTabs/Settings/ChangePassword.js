@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Button, TextField, Typography } from "@mui/material";
+import { Grid, Button, TextField, Typography, Divider } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -90,7 +90,9 @@ const ChangeUsername = () => {
         spacing={2}
       >
         <Grid item>
-          <Typography variant="h5">Change password</Typography>
+          <Divider sx={{ width: 600 }} textAlign="center">
+            <Typography variant="h6">Change password</Typography>
+          </Divider>
         </Grid>
         <Grid item>
           <TextField

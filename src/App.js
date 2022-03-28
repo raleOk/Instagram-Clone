@@ -7,12 +7,12 @@ import Forgot from "./pages/UserForms/Forgot";
 import Reset from "./pages/UserForms/Reset";
 import Home from "./pages/Home";
 import Navbar from "./components/Navbar/Navbar";
-import CreatePost from "./pages/NavigationTabs/CreatePost";
-import LikedPosts from "./pages/NavigationTabs/LikedPosts";
-import MyPosts from "./pages/NavigationTabs/MyPosts";
-import Profile from "./pages/NavigationTabs/Profile";
+import CreatePost from "./pages/NavigationTabs/Posts/CreatePost";
+import LikedPosts from "./pages/NavigationTabs/Posts/LikedPosts";
+import Profile from "./pages/NavigationTabs/Profile/Profile";
 import Settings from "./pages/NavigationTabs/Settings/Settings";
 import Loader from "./components/Loaders/Loader";
+import UserList from "./pages/NavigationTabs/Search/UserList";
 import { UserContext } from "./context/userContext";
 
 const App = () => {
@@ -42,9 +42,9 @@ const App = () => {
           <Route path="/" element={<Home />} exact />
           <Route path="create" element={<CreatePost />} />
           <Route path="liked" element={<LikedPosts />} />
-          <Route path="my-posts" element={<MyPosts />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="users/*" element={<UserList />} />
         </Route>
         <Route path="/*" element={<Navigate to="/" replace />} />
       </Routes>

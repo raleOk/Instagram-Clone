@@ -75,6 +75,12 @@ const deleteUser = async userId => {
   return axiosInstance.delete(`users/${userId}`);
 };
 
+const getUsers = async (searchTerm, page = 1, limit = 10) => {
+  return axiosInstance.get(
+    `users?search=${searchTerm}&limit=${limit}&page=${page}`
+  );
+};
+
 export {
   register,
   login,
@@ -85,4 +91,5 @@ export {
   updateUserData,
   updatePassword,
   deleteUser,
+  getUsers,
 };

@@ -10,13 +10,12 @@ import {
   Menu,
   Avatar,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import navLogo from "../../images/navLogo.png";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
-import { Search, SearchIconWrapper, StyledInputBase } from "./TabsStyles";
+import SearchBar from "../../pages/NavigationTabs/Search/SearchBar";
 import { UserContext } from "../../context/userContext";
 
 const Tabs = () => {
@@ -119,14 +118,6 @@ const Tabs = () => {
       onClose={handleMobileMenuClose}
     >
       <MenuItem
-        key="My posts"
-        onClick={() => {
-          navigate("/my-posts");
-        }}
-      >
-        My Posts
-      </MenuItem>
-      <MenuItem
         key="likedPosts"
         onClick={() => {
           navigate("/liked");
@@ -171,25 +162,9 @@ const Tabs = () => {
           >
             {logo}
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+          <SearchBar />
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <MenuItem
-              key="My posts"
-              onClick={() => {
-                navigate("/my-posts");
-              }}
-            >
-              <Typography textAlign="center">My Posts</Typography>
-            </MenuItem>
             <MenuItem
               key="likedPosts"
               onClick={() => {
