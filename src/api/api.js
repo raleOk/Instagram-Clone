@@ -81,6 +81,15 @@ const getUsers = async (searchTerm, page = 1, limit = 10) => {
   );
 };
 
+//post routes
+const createPost = async data => {
+  const formData = new FormData();
+  formData.append("media", data.media);
+  formData.append("caption", data.caption);
+
+  return axiosInstance.post("posts", formData);
+};
+
 export {
   register,
   login,
@@ -92,4 +101,5 @@ export {
   updatePassword,
   deleteUser,
   getUsers,
+  createPost,
 };
