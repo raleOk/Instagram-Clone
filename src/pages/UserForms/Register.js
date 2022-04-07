@@ -7,7 +7,7 @@ import logo from "../../images/logo.png";
 import { register } from "../../api/api";
 import CircularProgress from "@mui/material/CircularProgress";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
-import AvatarUpload from "../../components/AvatarUpload/AvatarUpload";
+import AvatarUpload from "../../components/FileUpload/AvatarUpload";
 import { errorStyles } from "../../styles/styles";
 
 const Register = () => {
