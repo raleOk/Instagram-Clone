@@ -10,17 +10,14 @@ import PostUpload from "../../../components/FileUpload/PostUpload";
 import Loader from "../../../components/Loaders/Loader";
 import { errorStyles } from "../../../styles/styles";
 import { createPost } from "../../../api/api";
+import ErrorAlert from "../../../components/Alerts/ErrorAlert";
 
 const CreatePost = () => {
   const navigate = useNavigate();
+
+  //stepper state
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
-  const [preview, setPreview] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handlePreview = file => {
-    setPreview(file);
-  };
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -30,8 +27,26 @@ const CreatePost = () => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
   };
 
+  //drag&drop/preview state
+  const [preview, setPreview] = useState(null);
+
+  const handlePreview = file => {
+    setPreview(file);
+  };
+
   const handleMediaValue = file => {
     formik.values.media = file;
+  };
+
+  //load spinner state
+  const [isLoading, setIsLoading] = useState(false);
+
+  //error message state
+  const [openErr, setOpenErr] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
+
+  const handleCloseErrMessage = () => {
+    setOpenErr(false);
   };
 
   const supportedFormats = ["image/jpg", "image/jpeg", "image/png"];
@@ -66,13 +81,14 @@ const CreatePost = () => {
       try {
         handleNext();
         setIsLoading(true);
-        const response = await createPost(values);
-
-        console.log(response.data);
+        await createPost(values);
         setIsLoading(false);
         navigate("/profile");
+        return;
       } catch (err) {
-        console.log(err);
+        setIsLoading(false);
+        setErrMessage(err.response.data.message);
+        setOpenErr(true);
       }
     },
   });
@@ -128,6 +144,13 @@ const CreatePost = () => {
           rows={4}
         />
       </Grid>
+      <Grid item>
+        <ErrorAlert
+          openErr={openErr}
+          errMessage={errMessage}
+          handleClose={handleCloseErrMessage}
+        />
+      </Grid>
     </Grid>
   );
 
@@ -143,7 +166,11 @@ const CreatePost = () => {
       </Button>
     ) : (
       <form onSubmit={formik.handleSubmit}>
-        <Button size="small" type="submit" disabled={preview === null}>
+        <Button
+          size="small"
+          type="submit"
+          disabled={preview === null || activeStep === 2}
+        >
           Create post
           {theme.direction === "rtl" ? (
             <KeyboardArrowLeft />
@@ -177,7 +204,7 @@ const CreatePost = () => {
             <Button
               size="small"
               onClick={handleBack}
-              disabled={preview !== null}
+              disabled={activeStep === 0 || activeStep === 2}
             >
               {theme.direction === "rtl" ? (
                 <KeyboardArrowRight />
