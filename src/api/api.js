@@ -81,13 +81,25 @@ const getUsers = async (searchTerm, page = 1, limit = 10) => {
   );
 };
 
-//post routes
+//posts routes
 const createPost = async data => {
   const formData = new FormData();
   formData.append("media", data.media);
   formData.append("caption", data.caption);
 
   return axiosInstance.post("posts", formData);
+};
+
+const getAllPosts = async () => {
+  return axiosInstance.get("posts");
+};
+
+const getOnePost = async postId => {
+  return axiosInstance.get(`posts/${postId}`);
+};
+
+const getUserPosts = async userId => {
+  return axiosInstance.get(`posts/user/${userId}`);
 };
 
 export {
@@ -102,4 +114,7 @@ export {
   deleteUser,
   getUsers,
   createPost,
+  getAllPosts,
+  getOnePost,
+  getUserPosts,
 };
