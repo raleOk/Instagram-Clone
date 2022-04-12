@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Grid } from "@mui/material";
 import { getUserPosts } from "../../api/api";
 import Loader from "../Loaders/Loader";
 import Post from "../Posts/Post";
+import { UserContext } from "../../context/userContext";
 
 const MyPosts = () => {
+  //context api
+  const userContext = useContext(UserContext);
+
   //posts state
   const [posts, setPosts] = useState([]);
 
@@ -14,13 +18,13 @@ const MyPosts = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       setIsLoading(true);
-      const res = await getUserPosts("6233798e9c5cd18f6c063da5");
-      const data = res.data;
+      const response = await getUserPosts(`${userContext.user._id}`);
+      const data = response.data;
       setPosts(data);
       setIsLoading(false);
     };
     fetchPosts();
-  }, []);
+  }, [userContext.user._id]);
 
   const postsList = (
     <Grid

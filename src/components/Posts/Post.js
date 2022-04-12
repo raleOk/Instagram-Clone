@@ -16,7 +16,7 @@ const Post = props => {
   const { avatar, username, createdAt, media, caption } = props;
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, maxHeight: 455 }}>
       <CardHeader
         avatar={<Avatar src={avatar} />}
         action={
