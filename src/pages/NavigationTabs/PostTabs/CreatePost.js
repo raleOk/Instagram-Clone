@@ -67,7 +67,7 @@ const CreatePost = () => {
     caption: yup
       .string("Enter the caption")
       .min(1, "Enter a caption!")
-      .max(500, "Reached maximum character limit!")
+      .max(200, "Reached maximum character limit!")
       .required("Caption is required!"),
   });
 
@@ -86,9 +86,19 @@ const CreatePost = () => {
         navigate("/profile");
         return;
       } catch (err) {
-        setIsLoading(false);
-        setErrMessage(err.response.data.message);
-        setOpenErr(true);
+        if (err.response.data.errors === undefined) {
+          setIsLoading(false);
+          setErrMessage(err.response.data.message);
+          setOpenErr(true);
+          setActiveStep(1);
+          return;
+        } else {
+          const errors = err.response.data.errors;
+          setIsLoading(false);
+          setErrMessage(errors[Object.keys(errors)[0]]);
+          setOpenErr(true);
+          setActiveStep(1);
+        }
       }
     },
   });
