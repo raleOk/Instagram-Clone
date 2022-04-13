@@ -1,21 +1,49 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Loader from "../components/Loaders/Loader";
 import Post from "../components/Posts/Post";
+import SuccessAlert from "../components/Alerts/SuccessAlert";
 import { getAllPosts } from "../api/api";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorFallback, setErrorFallback] = useState(null);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
+  //success message alert state and handlers
+  const [openMessage, setOpenMessage] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleOpenMessage = () => {
+    setOpenMessage(true);
+  };
+
+  const handleCloseMessage = () => {
+    setOpenMessage(false);
+  };
+
+  const handleSuccessMessage = msg => {
+    setSuccessMessage(msg);
+  };
+
+  //handler called by Home to render the list initially
+  //also called by Post to re-render the list after a post has been edited or deleted
+  const fetchPosts = async () => {
+    try {
       setIsLoading(true);
       const response = await getAllPosts();
       const data = response.data.posts;
       setPosts(data);
       setIsLoading(false);
-    };
+      return;
+    } catch (err) {
+      setErrorFallback(
+        <Typography variant="h2">Something went wrong!</Typography>
+      );
+    }
+  };
+
+  useEffect(() => {
     fetchPosts();
   }, []);
 
@@ -37,14 +65,28 @@ const Home = () => {
               createdAt={post.createdAt}
               media={post.media}
               caption={post.caption}
+              postUserId={post.user._id}
+              postId={post._id}
+              fetchPosts={fetchPosts}
+              handleOpenMessage={handleOpenMessage}
+              handleSuccessMessage={handleSuccessMessage}
             />
           </Grid>
         );
       })}
+      <Grid item>
+        <SuccessAlert
+          openMessage={openMessage}
+          handleClose={handleCloseMessage}
+          successMessage={successMessage}
+        />
+      </Grid>
     </Grid>
   );
 
-  return <>{isLoading ? <Loader /> : postsList}</>;
+  const fallbackPage = errorFallback === null ? <Loader /> : errorFallback;
+
+  return <>{isLoading ? fallbackPage : postsList}</>;
 };
 
 export default Home;

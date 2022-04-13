@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import {
   Card,
   CardHeader,
@@ -8,22 +8,111 @@ import {
   Avatar,
   IconButton,
   Typography,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { UserContext } from "../../context/userContext";
+import { deletePost } from "../../api/api";
 
 const Post = props => {
-  const { avatar, username, createdAt, media, caption } = props;
+  const {
+    avatar,
+    username,
+    createdAt,
+    media,
+    caption,
+    postUserId,
+    postId,
+    fetchPosts,
+    handleOpenMessage,
+    handleSuccessMessage,
+  } = props;
+
+  const userContext = useContext(UserContext);
+
+  //menu state and handlers
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handlePostMenu = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  //edit/delete post handlers
+  const handleEditPost = async () => {
+    //TODO;
+  };
+
+  const handleDeletePost = async () => {
+    try {
+      const response = await deletePost(postId);
+      const msg = response.data.message;
+      handleOpenMessage();
+      handleSuccessMessage(msg);
+      handleMenuClose();
+      fetchPosts();
+      return;
+    } catch (err) {
+      handleMenuClose();
+      console.log(err);
+    }
+  };
+
+  const postMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id="primary-search-account-menu"
+      keepMounted
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem
+        onClick={() => {
+          handleEditPost();
+        }}
+      >
+        <IconButton size="small" color="inherit">
+          <EditIcon />
+        </IconButton>
+        Edit post
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleDeletePost();
+        }}
+      >
+        <IconButton size="small" color="inherit">
+          <DeleteIcon />
+        </IconButton>
+        Delete post
+      </MenuItem>
+    </Menu>
+  );
+
+  const postMenuButton = (
+    <IconButton onClick={handlePostMenu}>
+      <MoreVertIcon />
+    </IconButton>
+  );
 
   return (
     <Card sx={{ maxWidth: 345, maxHeight: 455 }}>
       <CardHeader
         avatar={<Avatar src={avatar} />}
-        action={
-          <IconButton>
-            <MoreVertIcon />
-          </IconButton>
-        }
+        action={userContext.user._id === postUserId ? postMenuButton : ""}
         title={username}
         subheader={createdAt}
       />
@@ -38,6 +127,7 @@ const Post = props => {
           <FavoriteIcon />
         </IconButton>
       </CardActions>
+      {postMenu}
     </Card>
   );
 };
