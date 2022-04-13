@@ -102,6 +102,22 @@ const getUserPosts = async userId => {
   return axiosInstance.get(`posts/user/${userId}`);
 };
 
+const editPost = async (postId, data) => {
+  const formData = new FormData();
+  if (data.media !== "") {
+    formData.append("media", data.media);
+  }
+  if (data.caption !== "") {
+    formData.append("caption", data.caption);
+  }
+
+  return axiosInstance.put(`posts/${postId}`, formData);
+};
+
+const deletePost = async postId => {
+  return axiosInstance.delete(`posts/${postId}`);
+};
+
 export {
   register,
   login,
@@ -117,4 +133,6 @@ export {
   getAllPosts,
   getOnePost,
   getUserPosts,
+  editPost,
+  deletePost,
 };
