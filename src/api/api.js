@@ -103,15 +103,7 @@ const getUserPosts = async userId => {
 };
 
 const editPost = async (postId, data) => {
-  const formData = new FormData();
-  if (data.media !== "") {
-    formData.append("media", data.media);
-  }
-  if (data.caption !== "") {
-    formData.append("caption", data.caption);
-  }
-
-  return axiosInstance.put(`posts/${postId}`, formData);
+  return axiosInstance.put(`posts/${postId}`, data);
 };
 
 const deletePost = async postId => {

@@ -16,8 +16,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteModal from "../Modals/DeleteModal";
+import EditModal from "../Modals/EditModal";
 import { UserContext } from "../../context/userContext";
-import { deletePost } from "../../api/api";
+import { deletePost, editPost } from "../../api/api";
 
 const Post = props => {
   const {
@@ -60,9 +61,28 @@ const Post = props => {
     setShowDeleteModal(false);
   };
 
+  //edit modal state
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const handleShowEditModal = () => {
+    handleMenuClose();
+    setShowEditModal(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+  };
+
   //edit/delete post handlers
-  const handleEditPost = async () => {
-    //TODO;
+  const handleEditPost = async data => {
+    try {
+      await editPost(postId, data);
+      fetchPosts();
+      return;
+    } catch (err) {
+      handleMenuClose();
+      console.log(err);
+    }
   };
 
   const handleDeletePost = async () => {
@@ -91,11 +111,7 @@ const Post = props => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem
-        onClick={() => {
-          handleEditPost();
-        }}
-      >
+      <MenuItem onClick={handleShowEditModal}>
         <IconButton size="small" color="inherit">
           <EditIcon />
         </IconButton>
@@ -136,6 +152,16 @@ const Post = props => {
         </IconButton>
       </CardActions>
       {postMenu}
+      {showEditModal ? (
+        <EditModal
+          showModal={showEditModal}
+          handleCloseModal={handleCloseEditModal}
+          handleEdit={handleEditPost}
+          postCaption={caption}
+        />
+      ) : (
+        ""
+      )}
       {showDeleteModal ? (
         <DeleteModal
           showModal={showDeleteModal}
