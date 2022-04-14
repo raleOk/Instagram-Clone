@@ -15,6 +15,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteModal from "../Modals/DeleteModal";
 import { UserContext } from "../../context/userContext";
 import { deletePost } from "../../api/api";
 
@@ -45,6 +46,17 @@ const Post = props => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  //delete modal state
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   //edit/delete post handlers
@@ -89,11 +101,7 @@ const Post = props => {
         </IconButton>
         Edit post
       </MenuItem>
-      <MenuItem
-        onClick={() => {
-          handleDeletePost();
-        }}
-      >
+      <MenuItem onClick={handleShowModal}>
         <IconButton size="small" color="inherit">
           <DeleteIcon />
         </IconButton>
@@ -128,6 +136,18 @@ const Post = props => {
         </IconButton>
       </CardActions>
       {postMenu}
+      {showModal ? (
+        <DeleteModal
+          showModal={showModal}
+          handleCloseModal={handleCloseModal}
+          handleDelete={handleDeletePost}
+          modalTitle="Delete post?"
+          modalQuestion="Are you sure you want to delete your post? This action cannot
+         be undone."
+        />
+      ) : (
+        ""
+      )}
     </Card>
   );
 };
