@@ -2,7 +2,7 @@ const errorStyles = {
   sx: { width: 180 },
 };
 
-const deleteModalStyles = {
+const modalStyles = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -14,4 +14,4 @@ const deleteModalStyles = {
   p: 4,
 };
 
-export { errorStyles, deleteModalStyles };
+export { errorStyles, modalStyles };

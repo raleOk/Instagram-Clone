@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Button, Typography, Modal, Grid } from "@mui/material";
-import { deleteModalStyles } from "../../styles/styles";
+import { modalStyles } from "../../styles/styles";
 
 const DeleteModal = props => {
   const {
@@ -13,7 +13,7 @@ const DeleteModal = props => {
 
   return (
     <Modal open={showModal} onClose={handleCloseModal}>
-      <Box sx={deleteModalStyles}>
+      <Box sx={modalStyles}>
         <Grid
           container
           direction="column"

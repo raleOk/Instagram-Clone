@@ -49,14 +49,15 @@ const Post = props => {
   };
 
   //delete modal state
-  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const handleShowModal = () => {
-    setShowModal(true);
+  const handleShowDeleteModal = () => {
+    handleMenuClose();
+    setShowDeleteModal(true);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
   };
 
   //edit/delete post handlers
@@ -70,7 +71,6 @@ const Post = props => {
       const msg = response.data.message;
       handleOpenMessage();
       handleSuccessMessage(msg);
-      handleMenuClose();
       fetchPosts();
       return;
     } catch (err) {
@@ -101,7 +101,7 @@ const Post = props => {
         </IconButton>
         Edit post
       </MenuItem>
-      <MenuItem onClick={handleShowModal}>
+      <MenuItem onClick={handleShowDeleteModal}>
         <IconButton size="small" color="inherit">
           <DeleteIcon />
         </IconButton>
@@ -136,10 +136,10 @@ const Post = props => {
         </IconButton>
       </CardActions>
       {postMenu}
-      {showModal ? (
+      {showDeleteModal ? (
         <DeleteModal
-          showModal={showModal}
-          handleCloseModal={handleCloseModal}
+          showModal={showDeleteModal}
+          handleCloseModal={handleCloseDeleteModal}
           handleDelete={handleDeletePost}
           modalTitle="Delete post?"
           modalQuestion="Are you sure you want to delete your post? This action cannot
