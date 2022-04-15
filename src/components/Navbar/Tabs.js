@@ -15,7 +15,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import navLogo from "../../images/navLogo.png";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
-import SearchBar from "../../pages/NavigationTabs/Search/SearchBar";
+import SearchBar from "../../pages/Main/Search/SearchBar";
 import AddIcon from "@mui/icons-material/Add";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { UserContext } from "../../context/userContext";

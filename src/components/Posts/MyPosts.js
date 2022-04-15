@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from "react";
 import { Grid, Typography } from "@mui/material";
 import { getUserPosts } from "../../api/api";
 import Loader from "../Loaders/Loader";
-import Post from "../Posts/Post";
+import Posts from "./Posts";
 import SuccessAlert from "../Alerts/SuccessAlert";
 import { UserContext } from "../../context/userContext";
 
@@ -67,7 +67,7 @@ const MyPosts = () => {
       {posts.map(post => {
         return (
           <Grid item key={post._id}>
-            <Post
+            <Posts
               avatar={post.user.avatar}
               username={post.user.username}
               createdAt={post.createdAt}

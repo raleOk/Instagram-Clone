@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Typography } from "@mui/material";
-import Loader from "../components/Loaders/Loader";
-import Post from "../components/Posts/Post";
-import SuccessAlert from "../components/Alerts/SuccessAlert";
-import { getAllPosts } from "../api/api";
+import Loader from "../../../components/Loaders/Loader";
+import Posts from "../../../components/Posts/Posts";
+import SuccessAlert from "../../../components/Alerts/SuccessAlert";
+import { getAllPosts } from "../../../api/api";
 
-const Home = () => {
+const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorFallback, setErrorFallback] = useState(null);
@@ -59,7 +59,7 @@ const Home = () => {
       {posts.map(post => {
         return (
           <Grid item key={post._id}>
-            <Post
+            <Posts
               avatar={post.user.avatar}
               username={post.user.username}
               createdAt={post.createdAt}
@@ -89,4 +89,4 @@ const Home = () => {
   return <>{isLoading ? fallbackPage : postsList}</>;
 };
 
-export default Home;
+export default PostList;

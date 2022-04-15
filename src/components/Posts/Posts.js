@@ -20,7 +20,7 @@ import EditModal from "../Modals/EditModal";
 import { UserContext } from "../../context/userContext";
 import { deletePost, editPost } from "../../api/api";
 
-const Post = props => {
+const Posts = props => {
   const {
     avatar,
     username,
@@ -178,4 +178,4 @@ const Post = props => {
   );
 };
 
-export default Post;
+export default Posts;
