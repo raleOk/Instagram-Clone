@@ -54,7 +54,7 @@ const PostList = () => {
       justifyContent="center"
       alignItems="center"
       spacing={3}
-      sx={{ mt: 3 }}
+      sx={{ mt: 2 }}
     >
       {posts.map(post => {
         return (

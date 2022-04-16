@@ -146,7 +146,7 @@ const Tabs = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="secondary">
+      <AppBar position="fixed" color="secondary">
         <Toolbar>
           <Typography
             noWrap
@@ -198,6 +198,8 @@ const Tabs = () => {
           </Box>
         </Toolbar>
       </AppBar>
+      {/*rendering second Toolbar component to fix a visual bug when using position='fixed' on AppBar (check Material UI docs)*/}
+      <Toolbar />
       {renderMobileMenu}
       {renderMenu}
     </Box>

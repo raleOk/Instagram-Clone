@@ -68,9 +68,11 @@ const DeleteModal = props => {
                     alignItems: "center",
                     justifyContent: "center",
                     textAlign: "center",
+                    width: 365,
                   }}
                   multiline
-                  rows={5}
+                  fullWidth
+                  rows={8}
                 />
               </Grid>
               <Grid
