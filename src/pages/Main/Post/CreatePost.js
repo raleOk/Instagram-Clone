@@ -118,10 +118,10 @@ const CreatePost = () => {
     <Grid
       item
       container
-      direction="row"
+      direction="column"
       justifyContent="center"
       alignItems="start"
-      spacing={2}
+      spacing={4}
     >
       <Grid item>
         <PostUpload
@@ -144,16 +144,22 @@ const CreatePost = () => {
           error={formik.touched.caption && Boolean(formik.errors.caption)}
           helperText={formik.touched.caption && formik.errors.caption}
           FormHelperTextProps={errorStyles}
+          placeholder="Caption..."
+          label="Enter a caption "
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             textAlign: "center",
+            width: 365,
+            fontSize: "50",
           }}
+          fullWidth
           multiline
-          rows={4}
+          rows={7}
         />
       </Grid>
+
       <Grid item>
         <ErrorAlert
           openErr={openErr}
@@ -197,11 +203,9 @@ const CreatePost = () => {
       direction="column"
       justifyContent="center"
       alignItems="center"
-      spacing={3}
-      sx={{ mt: 2 }}
+      spacing={6}
+      sx={{ mt: -4 }}
     >
-      <Grid item>{activeStep === 0 ? firstStep : secondStep}</Grid>
-
       <Grid item container justifyContent="center">
         <MobileStepper
           variant="progress"
@@ -226,6 +230,7 @@ const CreatePost = () => {
           }
         />
       </Grid>
+      <Grid item>{activeStep === 0 ? firstStep : secondStep}</Grid>
     </Grid>
   );
 };

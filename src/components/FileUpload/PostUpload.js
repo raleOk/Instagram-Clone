@@ -47,8 +47,8 @@ const PostUpload = props => {
           <Avatar
             variant="square"
             sx={{
-              width: 250,
-              height: 250,
+              width: 365,
+              height: 365,
               textAlign: "center",
               display: "flex",
               justifyContent: "center",
@@ -72,8 +72,8 @@ const PostUpload = props => {
               <Avatar
                 variant="square"
                 sx={{
-                  width: 250,
-                  height: 250,
+                  width: 365,
+                  height: 365,
                 }}
                 src={filePreview}
                 {...getRootProps()}
