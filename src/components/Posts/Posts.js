@@ -19,6 +19,7 @@ import DeleteModal from "../Modals/DeleteModal";
 import EditModal from "../Modals/EditModal";
 import { UserContext } from "../../context/userContext";
 import { deletePost, editPost } from "../../api/api";
+import formatDate from "../../helpers/formatDate";
 
 const Posts = props => {
   const {
@@ -141,7 +142,7 @@ const Posts = props => {
         avatar={<Avatar src={avatar} />}
         action={userContext.user._id === postUserId ? postMenuButton : ""}
         title={username}
-        subheader={createdAt}
+        subheader={formatDate(createdAt)}
       />
       <CardMedia component="img" height="194" image={media} />
       <CardContent>
