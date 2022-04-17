@@ -90,8 +90,8 @@ const createPost = async data => {
   return axiosInstance.post("posts", formData);
 };
 
-const getAllPosts = async () => {
-  return axiosInstance.get("posts");
+const getAllPosts = async page => {
+  return axiosInstance.get(`posts?page=${page}`);
 };
 
 const getOnePost = async postId => {

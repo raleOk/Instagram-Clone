@@ -77,7 +77,7 @@ const Posts = props => {
   const handleEditPost = async data => {
     try {
       await editPost(postId, data);
-      fetchPosts();
+      fetchPosts(1);
       return;
     } catch (err) {
       handleMenuClose();
@@ -91,7 +91,7 @@ const Posts = props => {
       const msg = response.data.message;
       handleOpenMessage();
       handleSuccessMessage(msg);
-      fetchPosts();
+      fetchPosts(1);
       return;
     } catch (err) {
       handleMenuClose();

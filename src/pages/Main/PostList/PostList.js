@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Grid, Typography } from "@mui/material";
-import Loader from "../../../components/Loaders/Loader";
+import React, { useState, useCallback } from "react";
+import { Container, Grid, Typography } from "@mui/material";
 import Posts from "../../../components/Posts/Posts";
 import SuccessAlert from "../../../components/Alerts/SuccessAlert";
 import { getAllPosts } from "../../../api/api";
+import useFetchOnScroll from "../../../hooks/useFetchOnScroll";
 
 const PostList = () => {
+  //rendered state
   const [posts, setPosts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+
+  //fallback page state
   const [errorFallback, setErrorFallback] = useState(null);
 
   //success message alert state and handlers
@@ -26,26 +28,43 @@ const PostList = () => {
     setSuccessMessage(msg);
   };
 
-  //handler called by Home to render the list initially
-  //also called by Post to re-render the list after a post has been edited or deleted
-  const fetchPosts = async () => {
+  //pagination state and handlers
+  const [nextPage, setNextPage] = useState(2);
+  const [page, setPage] = useState(1);
+
+  const fetchPostsOnScroll = useCallback(async page => {
     try {
-      setIsLoading(true);
-      const response = await getAllPosts();
-      const data = response.data.posts;
-      setPosts(data);
-      setIsLoading(false);
-      return;
+      const response = await getAllPosts(page);
+      const postsArr = response.data.posts;
+      const paginationArr = response.data.pagination;
+      //reset state if the page returns no data; <Posts /> runs this when rendering page after deleting or editing a post
+      if (postsArr.length === 0) {
+        setPage(1);
+        setNextPage(null);
+        setIsFetching(false);
+        return;
+      }
+      //check for saving previous state; only if not on first page
+      page !== 1
+        ? setPosts(prevState => {
+            return [...prevState, ...postsArr];
+          })
+        : setPosts(postsArr);
+      setNextPage(paginationArr.next);
+      setIsFetching(false);
     } catch (err) {
       setErrorFallback(
         <Typography variant="h2">Something went wrong!</Typography>
       );
     }
-  };
-
-  useEffect(() => {
-    fetchPosts();
   }, []);
+
+  const [isFetching, setIsFetching] = useFetchOnScroll(
+    fetchPostsOnScroll,
+    page,
+    setPage,
+    nextPage
+  );
 
   const postsList = (
     <Grid
@@ -67,7 +86,7 @@ const PostList = () => {
               caption={post.caption}
               postUserId={post.user._id}
               postId={post._id}
-              fetchPosts={fetchPosts}
+              fetchPosts={fetchPostsOnScroll}
               handleOpenMessage={handleOpenMessage}
               handleSuccessMessage={handleSuccessMessage}
             />
@@ -84,9 +103,27 @@ const PostList = () => {
     </Grid>
   );
 
-  const fallbackPage = errorFallback === null ? <Loader /> : errorFallback;
-
-  return <>{isLoading ? fallbackPage : postsList}</>;
+  return (
+    <>
+      {postsList}
+      {isFetching && (
+        <Container
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {nextPage === null ? (
+            ""
+          ) : (
+            <Typography variant="h6">Gettings posts...</Typography>
+          )}
+        </Container>
+      )}
+      {errorFallback !== null && errorFallback}
+    </>
+  );
 };
 
 export default PostList;
