@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button, Typography, Modal, Grid } from "@mui/material";
 import { modalStyles } from "../../styles/styles";
+import Loader from "../Loaders/Loader";
 
 const DeleteModal = props => {
   const {
@@ -10,6 +11,15 @@ const DeleteModal = props => {
     modalTitle,
     modalQuestion,
   } = props;
+
+  //loading state
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleDeletePost = () => {
+    setIsLoading(true);
+    handleDelete();
+    setIsLoading(false);
+  };
 
   return (
     <Modal open={showModal} onClose={handleCloseModal}>
@@ -26,38 +36,44 @@ const DeleteModal = props => {
               {modalTitle}
             </Typography>
           </Grid>
-          <Grid item>
-            <Typography>{modalQuestion}</Typography>
-          </Grid>
-          <Grid
-            item
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            spacing={5}
-          >
-            <Grid item>
-              <Button
-                onClick={handleDelete}
-                variant="outlined"
-                size="small"
-                color="secondary"
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <>
+              <Grid item>
+                <Typography>{modalQuestion}</Typography>
+              </Grid>
+              <Grid
+                item
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                spacing={5}
               >
-                Yes, I'm sure.
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                onClick={handleCloseModal}
-                variant="outlined"
-                size="small"
-                color="secondary"
-              >
-                No, go back.
-              </Button>
-            </Grid>
-          </Grid>
+                <Grid item>
+                  <Button
+                    onClick={handleDeletePost}
+                    variant="outlined"
+                    size="small"
+                    color="secondary"
+                  >
+                    Yes, I'm sure.
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    onClick={handleCloseModal}
+                    variant="outlined"
+                    size="small"
+                    color="secondary"
+                  >
+                    No, go back.
+                  </Button>
+                </Grid>
+              </Grid>
+            </>
+          )}
         </Grid>
       </Box>
     </Modal>

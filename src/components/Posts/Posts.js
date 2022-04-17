@@ -77,7 +77,10 @@ const Posts = props => {
   const handleEditPost = async data => {
     try {
       await editPost(postId, data);
+      handleOpenMessage();
+      handleSuccessMessage("Post edited.");
       fetchPosts(1);
+      setShowEditModal(false);
       return;
     } catch (err) {
       handleMenuClose();
