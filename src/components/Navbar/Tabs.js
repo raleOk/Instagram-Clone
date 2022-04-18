@@ -15,7 +15,9 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import navLogo from "../../images/navLogo.png";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
-import SearchBar from "../../pages/NavigationTabs/Search/SearchBar";
+import SearchBar from "../../pages/Main/Search/SearchBar";
+import AddIcon from "@mui/icons-material/Add";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { UserContext } from "../../context/userContext";
 
 const Tabs = () => {
@@ -123,7 +125,7 @@ const Tabs = () => {
           navigate("/liked");
         }}
       >
-        Liked posts
+        <FavoriteBorderIcon /> Liked posts
       </MenuItem>
       <MenuItem
         key="createPost"
@@ -131,7 +133,7 @@ const Tabs = () => {
           navigate("/create");
         }}
       >
-        Create post
+        <AddIcon /> New post
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton size="small" color="inherit">
@@ -144,7 +146,7 @@ const Tabs = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="secondary">
+      <AppBar position="fixed" color="secondary">
         <Toolbar>
           <Typography
             noWrap
@@ -171,7 +173,7 @@ const Tabs = () => {
                 navigate("/liked");
               }}
             >
-              <Typography textAlign="center">Liked posts</Typography>
+              <FavoriteBorderIcon /> Liked posts
             </MenuItem>
             <MenuItem
               key="createPost"
@@ -179,7 +181,7 @@ const Tabs = () => {
                 navigate("/create");
               }}
             >
-              <Typography textAlign="center">Create post</Typography>
+              <AddIcon /> New post
             </MenuItem>
             <IconButton size="large" edge="end" onClick={handleProfileMenuOpen}>
               <Avatar src={userContext.user.avatar} alt="avatar" />
@@ -196,6 +198,8 @@ const Tabs = () => {
           </Box>
         </Toolbar>
       </AppBar>
+      {/*rendering second Toolbar component to fix a visual bug when using position='fixed' on AppBar (check Material UI docs)*/}
+      <Toolbar />
       {renderMobileMenu}
       {renderMenu}
     </Box>

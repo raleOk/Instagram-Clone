@@ -81,6 +81,35 @@ const getUsers = async (searchTerm, page = 1, limit = 10) => {
   );
 };
 
+//posts routes
+const createPost = async data => {
+  const formData = new FormData();
+  formData.append("media", data.media);
+  formData.append("caption", data.caption);
+
+  return axiosInstance.post("posts", formData);
+};
+
+const getAllPosts = async page => {
+  return axiosInstance.get(`posts?page=${page}`);
+};
+
+const getOnePost = async postId => {
+  return axiosInstance.get(`posts/${postId}`);
+};
+
+const getUserPosts = async userId => {
+  return axiosInstance.get(`posts/user/${userId}`);
+};
+
+const editPost = async (postId, data) => {
+  return axiosInstance.put(`posts/${postId}`, data);
+};
+
+const deletePost = async postId => {
+  return axiosInstance.delete(`posts/${postId}`);
+};
+
 export {
   register,
   login,
@@ -92,4 +121,10 @@ export {
   updatePassword,
   deleteUser,
   getUsers,
+  createPost,
+  getAllPosts,
+  getOnePost,
+  getUserPosts,
+  editPost,
+  deletePost,
 };

@@ -1,40 +1,29 @@
-import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { Box, Button, Typography, Modal, Grid } from "@mui/material";
-import { deleteModalStyles } from "../../styles/styles";
-import { deleteUser } from "../../api/api";
-import { UserContext } from "../../context/userContext";
-import ErrorAlert from "../Alerts/ErrorAlert";
+import { modalStyles } from "../../styles/styles";
+import Loader from "../Loaders/Loader";
 
 const DeleteModal = props => {
-  const userContext = useContext(UserContext);
-  const navigate = useNavigate();
+  const {
+    showModal,
+    handleCloseModal,
+    handleDelete,
+    modalTitle,
+    modalQuestion,
+  } = props;
 
-  const { showModal, handleCloseModal } = props;
+  //loading state
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [openErr, setOpenErr] = useState(false);
-  const [errMessage, setErrMessage] = useState("");
-  const handleErrMessageClose = () => {
-    setOpenErr(false);
-  };
-
-  const handleDelete = async () => {
-    try {
-      await deleteUser(userContext.user._id);
-      userContext.logout();
-      navigate("/login");
-      return;
-    } catch (err) {
-      //will add dynamic err msgs
-      setErrMessage("Something went wrong!");
-      setOpenErr(true);
-      return;
-    }
+  const handleDeletePost = () => {
+    setIsLoading(true);
+    handleDelete();
+    setIsLoading(false);
   };
 
   return (
     <Modal open={showModal} onClose={handleCloseModal}>
-      <Box sx={deleteModalStyles}>
+      <Box sx={modalStyles}>
         <Grid
           container
           direction="column"
@@ -44,51 +33,47 @@ const DeleteModal = props => {
         >
           <Grid item>
             <Typography variant="h6" component="h2">
-              Delete account?
+              {modalTitle}
             </Typography>
           </Grid>
-          <Grid item>
-            <Typography>
-              Are you sure you want to delete your account? This action cannot
-              be undone.
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            spacing={5}
-          >
-            <Grid item>
-              <Button
-                onClick={handleDelete}
-                variant="outlined"
-                size="small"
-                color="secondary"
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <>
+              <Grid item>
+                <Typography>{modalQuestion}</Typography>
+              </Grid>
+              <Grid
+                item
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                spacing={5}
               >
-                Yes, I'm sure
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                onClick={handleCloseModal}
-                variant="outlined"
-                size="small"
-                color="secondary"
-              >
-                No, go back
-              </Button>
-            </Grid>
-          </Grid>
-          <Grid item>
-            <ErrorAlert
-              openErr={openErr}
-              errMessage={errMessage}
-              handleClose={handleErrMessageClose}
-            />
-          </Grid>
+                <Grid item>
+                  <Button
+                    onClick={handleDeletePost}
+                    variant="outlined"
+                    size="small"
+                    color="secondary"
+                  >
+                    Yes, I'm sure.
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    onClick={handleCloseModal}
+                    variant="outlined"
+                    size="small"
+                    color="secondary"
+                  >
+                    No, go back.
+                  </Button>
+                </Grid>
+              </Grid>
+            </>
+          )}
         </Grid>
       </Box>
     </Modal>

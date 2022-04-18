@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Grid, Avatar, Typography, Button, Box } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { UserContext } from "../../../context/userContext";
-import MyPosts from "../Posts/MyPosts";
+import MyPosts from "../../../components/Posts/MyPosts";
 
 const Profile = () => {
   const userContext = useContext(UserContext);

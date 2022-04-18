@@ -8,7 +8,7 @@ import SuccessAlert from "../../../components/Alerts/SuccessAlert";
 import { errorStyles } from "../../../styles/styles";
 import { updateUserData } from "../../../api/api";
 import { UserContext } from "../../../context/userContext";
-import AvatarUpload from "../../../components/AvatarUpload/AvatarUpload";
+import AvatarUpload from "../../../components/FileUpload/AvatarUpload";
 
 const ChangeUserData = () => {
   const userContext = useContext(UserContext);
