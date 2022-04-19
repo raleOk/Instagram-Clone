@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from "react";
 import { Grid, Typography } from "@mui/material";
 import { getUserPosts } from "../../api/api";
 import Loader from "../Loaders/Loader";
-import Posts from "./Posts";
+import MyPostsList from "./MyPostsList";
 import SuccessAlert from "../Alerts/SuccessAlert";
 import { UserContext } from "../../context/userContext";
 
@@ -64,24 +64,7 @@ const MyPosts = () => {
       alignItems="center"
       spacing={3}
     >
-      {posts.map(post => {
-        return (
-          <Grid item key={post._id}>
-            <Posts
-              avatar={post.user.avatar}
-              username={post.user.username}
-              createdAt={post.createdAt}
-              media={post.media}
-              caption={post.caption}
-              postUserId={post.user._id}
-              postId={post._id}
-              fetchPosts={fetchPosts}
-              handleOpenMessage={handleOpenMessage}
-              handleSuccessMessage={handleSuccessMessage}
-            />
-          </Grid>
-        );
-      })}
+      <MyPostsList posts={posts} />
       <Grid item>
         <SuccessAlert
           openMessage={openMessage}
