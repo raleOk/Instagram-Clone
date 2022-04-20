@@ -10,6 +10,7 @@ import {
   Typography,
   Menu,
   MenuItem,
+  CardActionArea,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -33,6 +34,7 @@ const Posts = props => {
     fetchPosts,
     handleOpenMessage,
     handleSuccessMessage,
+    handleShowPostModal,
   } = props;
 
   const userContext = useContext(UserContext);
@@ -144,7 +146,14 @@ const Posts = props => {
         title={username}
         subheader={formatDate(createdAt)}
       />
-      <CardMedia component="img" height="194" image={media} />
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          height="194"
+          image={media}
+          onClick={handleShowPostModal}
+        />
+      </CardActionArea>
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {caption}

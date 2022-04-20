@@ -5,7 +5,7 @@ import Login from "./pages/Auth/Login";
 import Verify from "./pages/Auth/Verify";
 import Forgot from "./pages/Auth/Forgot";
 import Reset from "./pages/Auth/Reset";
-import PostList from "./pages/Main/PostList/PostList";
+import MainPostList from "./pages/Main/MainPostList/MainPostList";
 import Navbar from "./components/Navbar/Navbar";
 import CreatePost from "./pages/Main/Post/CreatePost";
 import LikedPosts from "./pages/Main/Post/LikedPosts";
@@ -39,7 +39,7 @@ const App = () => {
     return (
       <Routes>
         <Route path="/" element={<Navbar />}>
-          <Route path="/" element={<PostList />} exact />
+          <Route path="/" element={<MainPostList />} exact />
           <Route path="create" element={<CreatePost />} />
           <Route path="liked" element={<LikedPosts />} />
           <Route path="profile" element={<Profile />} />

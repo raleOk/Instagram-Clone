@@ -4,8 +4,9 @@ import Posts from "../../../components/Posts/Posts";
 import SuccessAlert from "../../../components/Alerts/SuccessAlert";
 import { getAllPosts } from "../../../api/api";
 import useFetchOnScroll from "../../../hooks/useFetchOnScroll";
+import ViewOnePost from "../../../components/Posts/ViewOnePost";
 
-const PostList = () => {
+const MainPostList = () => {
   //rendered state
   const [posts, setPosts] = useState([]);
 
@@ -26,6 +27,19 @@ const PostList = () => {
 
   const handleSuccessMessage = msg => {
     setSuccessMessage(msg);
+  };
+
+  //view one post modal state and handlers
+  const [showPostModal, setShowPostModal] = useState(false);
+  const [postData, setPostData] = useState({});
+
+  const handleShowPostModal = post => {
+    setPostData(post);
+    setShowPostModal(true);
+  };
+
+  const handleClosePostModal = () => {
+    setShowPostModal(false);
   };
 
   //pagination state and handlers
@@ -89,6 +103,9 @@ const PostList = () => {
               fetchPosts={fetchPostsOnScroll}
               handleOpenMessage={handleOpenMessage}
               handleSuccessMessage={handleSuccessMessage}
+              handleShowPostModal={() => {
+                handleShowPostModal(post);
+              }}
             />
           </Grid>
         );
@@ -106,6 +123,24 @@ const PostList = () => {
   return (
     <>
       {postsList}
+      {showPostModal ? (
+        <ViewOnePost
+          showPostModal={showPostModal}
+          handleClosePostModal={handleClosePostModal}
+          avatar={postData.user.avatar}
+          username={postData.user.username}
+          createdAt={postData.createdAt}
+          media={postData.media}
+          caption={postData.caption}
+          postUserId={postData.user._id}
+          postId={postData._id}
+          fetchPosts={fetchPostsOnScroll}
+          handleOpenMessage={handleOpenMessage}
+          handleSuccessMessage={handleSuccessMessage}
+        />
+      ) : (
+        ""
+      )}
       {isFetching && (
         <Container
           sx={{
@@ -126,4 +161,4 @@ const PostList = () => {
   );
 };
 
-export default PostList;
+export default MainPostList;
