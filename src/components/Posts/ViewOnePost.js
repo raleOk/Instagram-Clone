@@ -11,7 +11,6 @@ import {
   Menu,
   MenuItem,
   Dialog,
-  DialogContent,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -22,7 +21,6 @@ import EditModal from "../Modals/EditModal";
 import { UserContext } from "../../context/userContext";
 import { deletePost, editPost } from "../../api/api";
 import formatDate from "../../helpers/formatDate";
-import { postInModalStyles } from "../../styles/styles";
 
 const ViewOnePost = props => {
   const {
@@ -34,6 +32,7 @@ const ViewOnePost = props => {
     media,
     caption,
     postUserId,
+    postId,
     fetchPosts,
     handleOpenMessage,
     handleSuccessMessage,
@@ -81,10 +80,11 @@ const ViewOnePost = props => {
   //edit/delete post handlers
   const handleEditPost = async data => {
     try {
-      await editPost(data);
+      await editPost(postId, data);
       handleOpenMessage();
       handleSuccessMessage("Post edited.");
       fetchPosts(1);
+      handleClosePostModal();
       setShowEditModal(false);
       return;
     } catch (err) {
@@ -95,11 +95,12 @@ const ViewOnePost = props => {
 
   const handleDeletePost = async () => {
     try {
-      const response = await deletePost();
+      const response = await deletePost(postId);
       const msg = response.data.message;
       handleOpenMessage();
       handleSuccessMessage(msg);
       fetchPosts(1);
+      handleClosePostModal();
       return;
     } catch (err) {
       handleMenuClose();
@@ -141,55 +142,49 @@ const ViewOnePost = props => {
   );
 
   return (
-    <Dialog
-      open={showPostModal}
-      onClose={handleClosePostModal}
-      sx={postInModalStyles}
-    >
-      <DialogContent>
-        <Card sx={{ maxWidth: 345, maxHeight: 455 }}>
-          <CardHeader
-            avatar={<Avatar src={avatar} />}
-            action={userContext.user._id === postUserId ? postMenuButton : ""}
-            title={username}
-            subheader={formatDate(createdAt)}
+    <Dialog open={showPostModal} onClose={handleClosePostModal}>
+      <Card sx={{ height: 615, width: 600 }}>
+        <CardHeader
+          avatar={<Avatar src={avatar} />}
+          action={userContext.user._id === postUserId ? postMenuButton : ""}
+          title={username}
+          subheader={formatDate(createdAt)}
+        />
+        <CardMedia component="img" height="400" image={media} />
+        <CardContent>
+          <Typography variant="body2" color="text.secondary">
+            {caption}
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+          <IconButton>
+            <FavoriteIcon />
+          </IconButton>
+        </CardActions>
+        {postMenu}
+        {showEditModal ? (
+          <EditModal
+            showModal={showEditModal}
+            handleCloseModal={handleCloseEditModal}
+            handleEdit={handleEditPost}
+            postCaption={caption}
           />
-          <CardMedia component="img" height="194" image={media} />
-          <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              {caption}
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <IconButton>
-              <FavoriteIcon />
-            </IconButton>
-          </CardActions>
-          {postMenu}
-          {showEditModal ? (
-            <EditModal
-              showModal={showEditModal}
-              handleCloseModal={handleCloseEditModal}
-              handleEdit={handleEditPost}
-              postCaption={caption}
-            />
-          ) : (
-            ""
-          )}
-          {showDeleteModal ? (
-            <DeleteModal
-              showModal={showDeleteModal}
-              handleCloseModal={handleCloseDeleteModal}
-              handleDelete={handleDeletePost}
-              modalTitle="Delete post?"
-              modalQuestion="Are you sure you want to delete your post? This action cannot
+        ) : (
+          ""
+        )}
+        {showDeleteModal ? (
+          <DeleteModal
+            showModal={showDeleteModal}
+            handleCloseModal={handleCloseDeleteModal}
+            handleDelete={handleDeletePost}
+            modalTitle="Delete post?"
+            modalQuestion="Are you sure you want to delete your post? This action cannot
          be undone."
-            />
-          ) : (
-            ""
-          )}
-        </Card>
-      </DialogContent>
+          />
+        ) : (
+          ""
+        )}
+      </Card>
     </Dialog>
   );
 };

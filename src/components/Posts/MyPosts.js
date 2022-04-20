@@ -64,7 +64,12 @@ const MyPosts = () => {
       alignItems="center"
       spacing={3}
     >
-      <MyPostsList posts={posts} />
+      <MyPostsList
+        posts={posts}
+        fetchPosts={fetchPosts}
+        handleOpenMessage={handleOpenMessage}
+        handleSuccessMessage={handleSuccessMessage}
+      />
       <Grid item>
         <SuccessAlert
           openMessage={openMessage}

@@ -3,14 +3,14 @@ import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
 import ViewOnePost from "./ViewOnePost";
 
 const MyPostsList = props => {
-  const { posts } = props;
+  const { posts, fetchPosts, handleOpenMessage, handleSuccessMessage } = props;
 
   const [showPostModal, setShowPostModal] = useState(false);
   const [postData, setPostData] = useState({});
 
   const handleShowPostModal = post => {
-    setShowPostModal(true);
     setPostData(post);
+    setShowPostModal(true);
   };
 
   const handleClosePostModal = () => {
@@ -60,6 +60,10 @@ const MyPostsList = props => {
           media={postData.media}
           caption={postData.caption}
           postUserId={postData.user._id}
+          postId={postData._id}
+          fetchPosts={fetchPosts}
+          handleOpenMessage={handleOpenMessage}
+          handleSuccessMessage={handleSuccessMessage}
         />
       ) : (
         ""
