@@ -14,4 +14,10 @@ const modalStyles = {
   p: 4,
 };
 
-export { errorStyles, modalStyles };
+const postInModalStyles = {
+  borderWidth: "20px",
+  borderColor: "rgba(0,0,0,0.2)",
+  borderStyle: "solid",
+};
+
+export { errorStyles, modalStyles, postInModalStyles };
