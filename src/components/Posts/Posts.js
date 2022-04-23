@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -38,6 +39,15 @@ const Posts = props => {
   } = props;
 
   const userContext = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  //handler that checks if the post is the currently logged in user's, sends to /profile if it is
+  const handleNavigateProfile = () => {
+    userContext.user._id === postUserId
+      ? navigate("/profile")
+      : navigate(`/users/${postUserId}`);
+  };
 
   //menu state and handlers
   const [anchorEl, setAnchorEl] = useState(null);
@@ -141,7 +151,13 @@ const Posts = props => {
   return (
     <Card sx={{ maxWidth: 345, maxHeight: 455 }}>
       <CardHeader
-        avatar={<Avatar src={avatar} />}
+        avatar={
+          <Avatar
+            src={avatar}
+            onClick={handleNavigateProfile}
+            sx={{ "&:hover": { cursor: "pointer" } }}
+          />
+        }
         action={userContext.user._id === postUserId ? postMenuButton : ""}
         title={username}
         subheader={formatDate(createdAt)}

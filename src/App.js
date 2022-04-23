@@ -13,6 +13,7 @@ import Profile from "./pages/Main/Profile/Profile";
 import Settings from "./pages/Main/Settings/Settings";
 import Loader from "./components/Loaders/Loader";
 import UserList from "./pages/Main/Search/UserList";
+import UserPosts from "./pages/Main/Post/UserPosts";
 import { UserContext } from "./context/userContext";
 
 const App = () => {
@@ -45,6 +46,7 @@ const App = () => {
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
           <Route path="users/*" element={<UserList />} />
+          <Route path="users/:userId" element={<UserPosts />} />
         </Route>
         <Route path="/*" element={<Navigate to="/" replace />} />
       </Routes>
