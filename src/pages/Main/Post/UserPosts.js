@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { Grid, Avatar, Typography } from "@mui/material";
 import MyPostsList from "../../../components/Posts/MyPostsList";
@@ -18,7 +18,7 @@ const Profile = () => {
   //load spinner state
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchUserPosts = async () => {
+  const fetchUserPosts = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await getUserPosts(userId);
@@ -33,11 +33,11 @@ const Profile = () => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     fetchUserPosts();
-  }, []);
+  }, [fetchUserPosts]);
 
   return (
     <>
