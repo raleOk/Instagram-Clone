@@ -25,18 +25,12 @@ import formatDate from "../../helpers/formatDate";
 
 const ViewOnePostCard = props => {
   const {
-    showPostModal,
-    handleClosePostModal,
-    avatar,
-    username,
-    createdAt,
-    media,
-    caption,
-    postUserId,
-    postId,
+    postData,
     fetchPosts,
     handleOpenMessage,
     handleSuccessMessage,
+    showPostModal,
+    handleClosePostModal,
   } = props;
 
   const userContext = useContext(UserContext);
@@ -82,7 +76,7 @@ const ViewOnePostCard = props => {
   //edit/delete post handlers
   const handleEditPost = async data => {
     try {
-      await editPost(postId, data);
+      await editPost(postData._id, data);
       handleOpenMessage();
       handleSuccessMessage("Post edited.");
       fetchPosts(1);
@@ -97,7 +91,7 @@ const ViewOnePostCard = props => {
 
   const handleDeletePost = async () => {
     try {
-      const response = await deletePost(postId);
+      const response = await deletePost(postData._id);
       const msg = response.data.message;
       handleOpenMessage();
       handleSuccessMessage(msg);
@@ -112,9 +106,9 @@ const ViewOnePostCard = props => {
 
   //handler that checks if the post is the currently logged in user's, sends to /profile if it is
   const handleNavigateProfile = () => {
-    userContext.user._id === postUserId
+    userContext.user._id === postData.user._id
       ? navigate("/profile")
-      : navigate(`/users/${postUserId}`);
+      : navigate(`/users/${postData.user._id}`);
   };
 
   const postMenu = (
@@ -156,19 +150,21 @@ const ViewOnePostCard = props => {
         <CardHeader
           avatar={
             <Avatar
-              src={avatar}
+              src={postData.user.avatar}
               onClick={handleNavigateProfile}
               sx={{ "&:hover": { cursor: "pointer" } }}
             />
           }
-          action={userContext.user._id === postUserId ? postMenuButton : ""}
-          title={username}
-          subheader={formatDate(createdAt)}
+          action={
+            userContext.user._id === postData.user._id ? postMenuButton : ""
+          }
+          title={postData.user.username}
+          subheader={formatDate(postData.createdAt)}
         />
-        <CardMedia component="img" height="400" image={media} />
+        <CardMedia component="img" height="400" image={postData.media} />
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            {caption}
+            {postData.caption}
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
@@ -182,7 +178,7 @@ const ViewOnePostCard = props => {
             showModal={showEditModal}
             handleCloseModal={handleCloseEditModal}
             handleEdit={handleEditPost}
-            postCaption={caption}
+            postCaption={postData.caption}
           />
         ) : (
           ""

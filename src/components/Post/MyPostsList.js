@@ -52,18 +52,12 @@ const MyPostsList = props => {
       })}
       {showPostModal ? (
         <ViewOnePostCard
-          showPostModal={showPostModal}
-          handleClosePostModal={handleClosePostModal}
-          avatar={postData.user.avatar}
-          username={postData.user.username}
-          createdAt={postData.createdAt}
-          media={postData.media}
-          caption={postData.caption}
-          postUserId={postData.user._id}
-          postId={postData._id}
+          postData={postData}
           fetchPosts={fetchPosts}
           handleOpenMessage={handleOpenMessage}
           handleSuccessMessage={handleSuccessMessage}
+          showPostModal={showPostModal}
+          handleClosePostModal={handleClosePostModal}
         />
       ) : (
         ""

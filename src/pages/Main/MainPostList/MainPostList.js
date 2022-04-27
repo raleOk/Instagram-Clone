@@ -92,13 +92,7 @@ const MainPostList = () => {
         return (
           <Grid item key={post._id}>
             <PostCard
-              avatar={post.user.avatar}
-              username={post.user.username}
-              createdAt={post.createdAt}
-              media={post.media}
-              caption={post.caption}
-              postUserId={post.user._id}
-              postId={post._id}
+              post={post}
               fetchPosts={fetchPosts}
               handleOpenMessage={handleOpenMessage}
               handleSuccessMessage={handleSuccessMessage}
@@ -124,18 +118,12 @@ const MainPostList = () => {
       {postsList}
       {showPostModal ? (
         <ViewOnePostCard
-          showPostModal={showPostModal}
-          handleClosePostModal={handleClosePostModal}
-          avatar={postData.user.avatar}
-          username={postData.user.username}
-          createdAt={postData.createdAt}
-          media={postData.media}
-          caption={postData.caption}
-          postUserId={postData.user._id}
-          postId={postData._id}
+          postData={postData}
           fetchPosts={fetchPosts}
           handleOpenMessage={handleOpenMessage}
           handleSuccessMessage={handleSuccessMessage}
+          showPostModal={showPostModal}
+          handleClosePostModal={handleClosePostModal}
         />
       ) : (
         ""

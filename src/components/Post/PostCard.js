@@ -25,13 +25,7 @@ import formatDate from "../../helpers/formatDate";
 
 const PostCard = props => {
   const {
-    avatar,
-    username,
-    createdAt,
-    media,
-    caption,
-    postUserId,
-    postId,
+    post,
     fetchPosts,
     handleOpenMessage,
     handleSuccessMessage,
@@ -44,9 +38,9 @@ const PostCard = props => {
 
   //handler that checks if the post is the currently logged in user's, sends to /profile if it is
   const handleNavigateProfile = () => {
-    userContext.user._id === postUserId
+    userContext.user._id === post.user._id
       ? navigate("/profile")
-      : navigate(`/users/${postUserId}`);
+      : navigate(`/users/${post.user._id}`);
   };
 
   //menu state and handlers
@@ -89,7 +83,7 @@ const PostCard = props => {
   //edit/delete post handlers
   const handleEditPost = async data => {
     try {
-      await editPost(postId, data);
+      await editPost(post._id, data);
       handleOpenMessage();
       handleSuccessMessage("Post edited.");
       fetchPosts(1);
@@ -103,7 +97,7 @@ const PostCard = props => {
 
   const handleDeletePost = async () => {
     try {
-      const response = await deletePost(postId);
+      const response = await deletePost(post._id);
       const msg = response.data.message;
       handleOpenMessage();
       handleSuccessMessage(msg);
@@ -153,26 +147,26 @@ const PostCard = props => {
       <CardHeader
         avatar={
           <Avatar
-            src={avatar}
+            src={post.user.avatar}
             onClick={handleNavigateProfile}
             sx={{ "&:hover": { cursor: "pointer" } }}
           />
         }
-        action={userContext.user._id === postUserId ? postMenuButton : ""}
-        title={username}
-        subheader={formatDate(createdAt)}
+        action={userContext.user._id === post.user._id ? postMenuButton : ""}
+        title={post.user.username}
+        subheader={formatDate(post.createdAt)}
       />
       <CardActionArea>
         <CardMedia
           component="img"
           height="194"
-          image={media}
+          image={post.media}
           onClick={handleShowPostModal}
         />
       </CardActionArea>
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {caption}
+          {post.caption}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -186,7 +180,7 @@ const PostCard = props => {
           showModal={showEditModal}
           handleCloseModal={handleCloseEditModal}
           handleEdit={handleEditPost}
-          postCaption={caption}
+          postCaption={post.caption}
         />
       ) : (
         ""
