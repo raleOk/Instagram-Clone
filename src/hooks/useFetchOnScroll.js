@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 
-const useFetchOnScroll = (fetchPostsOnScroll, page, setPage, nextPage) => {
+const useFetchOnScroll = (fetchItems, page, setPage, noMorePages) => {
   const [isFetching, setIsFetching] = useState(false);
 
+  //scroll callback
   const handleScroll = useCallback(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop !==
@@ -13,25 +14,25 @@ const useFetchOnScroll = (fetchPostsOnScroll, page, setPage, nextPage) => {
     setIsFetching(true);
   }, [isFetching]);
 
+  //useEffect listening for when the page gets scrolled down
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
+  //useEffect handling the parametres of the fetchItems function
   useEffect(() => {
     if (!isFetching) return;
+    if (noMorePages) return;
     setPage(prevState => {
       return prevState + 1;
     });
-  }, [isFetching, setPage]);
+  }, [isFetching, setPage, noMorePages]);
 
+  //useEffect calling the fetchItems function when a page changes
   useEffect(() => {
-    if (nextPage === null) {
-      setIsFetching(false);
-      return;
-    }
-    fetchPostsOnScroll(page);
-  }, [page, fetchPostsOnScroll]);
+    fetchItems(page);
+  }, [page, fetchItems]);
 
   return [isFetching, setIsFetching];
 };

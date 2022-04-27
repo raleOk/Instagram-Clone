@@ -43,29 +43,28 @@ const MainPostList = () => {
   };
 
   //pagination state and handlers
-  const [nextPage, setNextPage] = useState(2);
   const [page, setPage] = useState(1);
+  const [noMorePages, setNoMorePages] = useState(false);
 
-  const fetchPostsOnScroll = useCallback(async page => {
+  const fetchPosts = useCallback(async page => {
     try {
       const response = await getAllPosts(page);
       const postsArr = response.data.posts;
       const paginationArr = response.data.pagination;
-      //reset state if the page returns no data; <Posts /> runs this when rendering page after deleting or editing a post
-      if (postsArr.length === 0) {
-        setPage(1);
-        setNextPage(null);
-        setIsFetching(false);
-        return;
-      }
       //check for saving previous state; only if not on first page
       page !== 1
         ? setPosts(prevState => {
             return [...prevState, ...postsArr];
           })
         : setPosts(postsArr);
-      setNextPage(paginationArr.next);
+      //check if next page doesn't exist, so the function stops getting called by useFetchOnScroll hook
+      if (paginationArr.next === null) {
+        setNoMorePages(true);
+        setIsFetching(false);
+        return;
+      }
       setIsFetching(false);
+      return;
     } catch (err) {
       setErrorFallback(
         <Typography variant="h2">Something went wrong!</Typography>
@@ -74,10 +73,10 @@ const MainPostList = () => {
   }, []);
 
   const [isFetching, setIsFetching] = useFetchOnScroll(
-    fetchPostsOnScroll,
+    fetchPosts,
     page,
     setPage,
-    nextPage
+    noMorePages
   );
 
   const postsList = (
@@ -100,7 +99,7 @@ const MainPostList = () => {
               caption={post.caption}
               postUserId={post.user._id}
               postId={post._id}
-              fetchPosts={fetchPostsOnScroll}
+              fetchPosts={fetchPosts}
               handleOpenMessage={handleOpenMessage}
               handleSuccessMessage={handleSuccessMessage}
               handleShowPostModal={() => {
@@ -134,7 +133,7 @@ const MainPostList = () => {
           caption={postData.caption}
           postUserId={postData.user._id}
           postId={postData._id}
-          fetchPosts={fetchPostsOnScroll}
+          fetchPosts={fetchPosts}
           handleOpenMessage={handleOpenMessage}
           handleSuccessMessage={handleSuccessMessage}
         />
@@ -149,8 +148,8 @@ const MainPostList = () => {
             alignItems: "center",
           }}
         >
-          {nextPage === null ? (
-            ""
+          {noMorePages === true ? (
+            <Typography variant="h6">No more posts</Typography>
           ) : (
             <Typography variant="h6">Gettings posts...</Typography>
           )}
