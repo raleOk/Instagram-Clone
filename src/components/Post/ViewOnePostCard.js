@@ -23,7 +23,7 @@ import { UserContext } from "../../context/userContext";
 import { deletePost, editPost } from "../../api/api";
 import formatDate from "../../helpers/formatDate";
 
-const ViewOnePost = props => {
+const ViewOnePostCard = props => {
   const {
     showPostModal,
     handleClosePostModal,
@@ -204,4 +204,4 @@ const ViewOnePost = props => {
   );
 };
 
-export default ViewOnePost;
+export default ViewOnePostCard;

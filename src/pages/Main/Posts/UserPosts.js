@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { Grid, Avatar, Typography } from "@mui/material";
-import MyPostsList from "../../../components/Posts/MyPostsList";
+import MyPostsList from "../../../components/Post/MyPostsList";
 import Loader from "../../../components/Loaders/Loader";
 import { getUserPosts } from "../../../api/api";
 

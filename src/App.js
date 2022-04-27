@@ -7,13 +7,13 @@ import Forgot from "./pages/Auth/Forgot";
 import Reset from "./pages/Auth/Reset";
 import MainPostList from "./pages/Main/MainPostList/MainPostList";
 import Navbar from "./components/Navbar/Navbar";
-import CreatePost from "./pages/Main/Post/CreatePost";
-import LikedPosts from "./pages/Main/Post/LikedPosts";
+import CreatePost from "./pages/Main/Posts/CreatePost";
+import LikedPosts from "./pages/Main/Posts/LikedPosts";
 import Profile from "./pages/Main/Profile/Profile";
 import Settings from "./pages/Main/Settings/Settings";
 import Loader from "./components/Loaders/Loader";
 import UserList from "./pages/Main/Search/UserList";
-import UserPosts from "./pages/Main/Post/UserPosts";
+import UserPosts from "./pages/Main/Posts/UserPosts";
 import { UserContext } from "./context/userContext";
 
 const App = () => {

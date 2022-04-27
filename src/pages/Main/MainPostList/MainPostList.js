@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from "react";
 import { Container, Grid, Typography } from "@mui/material";
-import Posts from "../../../components/Posts/Posts";
+import PostCard from "../../../components/Post/PostCard";
 import SuccessAlert from "../../../components/Alerts/SuccessAlert";
 import { getAllPosts } from "../../../api/api";
 import useFetchOnScroll from "../../../hooks/useFetchOnScroll";
-import ViewOnePost from "../../../components/Posts/ViewOnePost";
+import ViewOnePostCard from "../../../components/Post/ViewOnePostCard";
 
 const MainPostList = () => {
   //rendered state
@@ -91,7 +91,7 @@ const MainPostList = () => {
       {posts.map(post => {
         return (
           <Grid item key={post._id}>
-            <Posts
+            <PostCard
               avatar={post.user.avatar}
               username={post.user.username}
               createdAt={post.createdAt}
@@ -123,7 +123,7 @@ const MainPostList = () => {
     <>
       {postsList}
       {showPostModal ? (
-        <ViewOnePost
+        <ViewOnePostCard
           showPostModal={showPostModal}
           handleClosePostModal={handleClosePostModal}
           avatar={postData.user.avatar}

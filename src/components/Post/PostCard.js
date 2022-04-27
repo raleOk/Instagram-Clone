@@ -23,7 +23,7 @@ import { UserContext } from "../../context/userContext";
 import { deletePost, editPost } from "../../api/api";
 import formatDate from "../../helpers/formatDate";
 
-const Posts = props => {
+const PostCard = props => {
   const {
     avatar,
     username,
@@ -207,4 +207,4 @@ const Posts = props => {
   );
 };
 
-export default Posts;
+export default PostCard;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
-import ViewOnePost from "./ViewOnePost";
+import ViewOnePostCard from "./ViewOnePostCard";
 
 const MyPostsList = props => {
   const { posts, fetchPosts, handleOpenMessage, handleSuccessMessage } = props;
@@ -51,7 +51,7 @@ const MyPostsList = props => {
         );
       })}
       {showPostModal ? (
-        <ViewOnePost
+        <ViewOnePostCard
           showPostModal={showPostModal}
           handleClosePostModal={handleClosePostModal}
           avatar={postData.user.avatar}
