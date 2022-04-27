@@ -26,7 +26,8 @@ import formatDate from "../../helpers/formatDate";
 const PostCard = props => {
   const {
     post,
-    fetchPosts,
+    posts,
+    handleRender,
     handleOpenMessage,
     handleSuccessMessage,
     handleShowPostModal,
@@ -80,13 +81,26 @@ const PostCard = props => {
     setShowEditModal(false);
   };
 
-  //edit/delete post handlers
+  //edit/delete post handlers and callbacks
+
+  const handleEditRender = editedItem => {
+    const currentPosts = posts;
+
+    //finds the element that has the wanted id and replaces it
+    const editedPosts = currentPosts.map(item =>
+      item._id !== editedItem._id ? item : editedItem
+    );
+
+    handleRender(editedPosts);
+  };
+
   const handleEditPost = async data => {
     try {
-      await editPost(post._id, data);
+      const response = await editPost(post._id, data);
+      const editedPost = response.data;
       handleOpenMessage();
       handleSuccessMessage("Post edited.");
-      fetchPosts(1);
+      handleEditRender(editedPost);
       setShowEditModal(false);
       return;
     } catch (err) {
@@ -95,13 +109,25 @@ const PostCard = props => {
     }
   };
 
+  const handleDeleteRender = () => {
+    const currentPosts = posts;
+    const postId = post._id;
+
+    //returns array of posts without the deleted item
+    const filteredPosts = currentPosts.filter(item => {
+      return item._id !== postId;
+    });
+
+    handleRender(filteredPosts);
+  };
+
   const handleDeletePost = async () => {
     try {
       const response = await deletePost(post._id);
       const msg = response.data.message;
       handleOpenMessage();
       handleSuccessMessage(msg);
-      fetchPosts(1);
+      handleDeleteRender();
       return;
     } catch (err) {
       handleMenuClose();

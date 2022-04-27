@@ -93,7 +93,8 @@ const MainPostList = () => {
           <Grid item key={post._id}>
             <PostCard
               post={post}
-              fetchPosts={fetchPosts}
+              posts={posts}
+              handleRender={setPosts}
               handleOpenMessage={handleOpenMessage}
               handleSuccessMessage={handleSuccessMessage}
               handleShowPostModal={() => {
