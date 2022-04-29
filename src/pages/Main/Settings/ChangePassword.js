@@ -3,22 +3,26 @@ import { Grid, Button, TextField, Typography, Divider } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import CircularProgress from "@mui/material/CircularProgress";
-import ErrorAlert from "../../../components/Alerts/ErrorAlert";
-import SuccessAlert from "../../../components/Alerts/SuccessAlert";
+import AlertMessage from "../../../components/Alerts/AlertMessage";
 import { errorStyles } from "../../../styles/styles";
 import { updatePassword } from "../../../api/api";
 
 const ChangeUsername = () => {
+  //load state
   const [isLoading, setIsLoading] = useState(false);
 
+  //success message state and handlers
   const [openMessage, setOpenMessage] = useState(false);
-  const handleMessageClose = () => {
+
+  const handleCloseMessage = () => {
     setOpenMessage(false);
   };
 
+  //error message state and handlers
   const [openErr, setOpenErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
-  const handleErrMessageClose = () => {
+
+  const handleCloseErrorMessage = () => {
     setOpenErr(false);
   };
 
@@ -155,17 +159,19 @@ const ChangeUsername = () => {
           </Grid>
         )}
         <Grid item>
-          <ErrorAlert
-            openErr={openErr}
-            errMessage={errMessage}
-            handleClose={handleErrMessageClose}
+          <AlertMessage
+            openAlert={openErr}
+            handleClose={handleCloseErrorMessage}
+            handleMessage={errMessage}
+            alertAttributes={{ severity: "error", color: "error" }}
           />
         </Grid>
         <Grid item>
-          <SuccessAlert
-            openMessage={openMessage}
-            handleClose={handleMessageClose}
-            successMessage="Password successfully changed"
+          <AlertMessage
+            openAlert={openMessage}
+            handleClose={handleCloseMessage}
+            handleMessage="Password successfully changed!"
+            alertAttributes={{ severity: "success", color: "info" }}
           />
         </Grid>
       </Grid>

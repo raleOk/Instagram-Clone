@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { Container, Grid, Typography } from "@mui/material";
 import PostCard from "../../../components/Post/PostCard";
-import SuccessAlert from "../../../components/Alerts/SuccessAlert";
+import AlertMessage from "../../../components/Alerts/AlertMessage";
 import { getAllPosts } from "../../../api/api";
 import useFetchOnScroll from "../../../hooks/useFetchOnScroll";
 import ViewOnePostCard from "../../../components/Post/ViewOnePostCard";
@@ -105,10 +105,11 @@ const MainPostList = () => {
         );
       })}
       <Grid item>
-        <SuccessAlert
-          openMessage={openMessage}
+        <AlertMessage
+          openAlert={openMessage}
           handleClose={handleCloseMessage}
-          successMessage={successMessage}
+          handleMessage={successMessage}
+          alertAttributes={{ severity: "success", color: "info" }}
         />
       </Grid>
     </Grid>

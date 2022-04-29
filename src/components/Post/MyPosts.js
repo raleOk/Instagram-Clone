@@ -3,7 +3,7 @@ import { Grid, Typography } from "@mui/material";
 import { getUserPosts } from "../../api/api";
 import Loader from "../Loaders/Loader";
 import MyPostsList from "./MyPostsList";
-import SuccessAlert from "../Alerts/SuccessAlert";
+import AlertMessage from "../Alerts/AlertMessage";
 import { UserContext } from "../../context/userContext";
 
 const MyPosts = () => {
@@ -71,10 +71,11 @@ const MyPosts = () => {
         handleSuccessMessage={handleSuccessMessage}
       />
       <Grid item>
-        <SuccessAlert
-          openMessage={openMessage}
+        <AlertMessage
+          openAlert={openMessage}
           handleClose={handleCloseMessage}
-          successMessage={successMessage}
+          handleMessage={successMessage}
+          alertAttributes={{ severity: "success", color: "info" }}
         />
       </Grid>
     </Grid>

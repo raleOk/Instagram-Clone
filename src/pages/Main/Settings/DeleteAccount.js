@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Grid, Typography, Divider } from "@mui/material";
 import DeleteModal from "../../../components/Modals/DeleteModal";
-import ErrorAlert from "../../../components/Alerts/ErrorAlert";
+import AlertMessage from "../../../components/Alerts/AlertMessage";
 import { deleteUser } from "../../../api/api";
 import { UserContext } from "../../../context/userContext";
 
@@ -26,7 +26,8 @@ const DeleteAccount = () => {
   //error message state and handlers
   const [openErr, setOpenErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
-  const handleErrMessageClose = () => {
+
+  const handleCloseErrorMessage = () => {
     setOpenErr(false);
   };
 
@@ -85,10 +86,11 @@ const DeleteAccount = () => {
         ""
       )}
       <Grid item>
-        <ErrorAlert
-          openErr={openErr}
-          errMessage={errMessage}
-          handleClose={handleErrMessageClose}
+        <AlertMessage
+          openAlert={openErr}
+          handleClose={handleCloseErrorMessage}
+          handleMessage={errMessage}
+          alertAttributes={{ severity: "error", color: "error" }}
         />
       </Grid>
     </Grid>

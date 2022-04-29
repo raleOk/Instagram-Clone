@@ -6,17 +6,20 @@ import * as yup from "yup";
 import logo from "../../images/logo.png";
 import { forgot } from "../../api/api";
 import CircularProgress from "@mui/material/CircularProgress";
-import ErrorAlert from "../../components/Alerts/ErrorAlert";
+import AlertMessage from "../../components/Alerts/AlertMessage";
 import { errorStyles } from "../../styles/styles";
 
 const Forgot = () => {
   const navigate = useNavigate();
 
+  //load state
   const [isLoading, setIsLoading] = useState(false);
 
+  //error message state and handlers
   const [openErr, setOpenErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
-  const handleErrMessageClose = () => {
+
+  const handleCloseErrorMessage = () => {
     setOpenErr(false);
   };
 
@@ -93,10 +96,11 @@ const Forgot = () => {
               </Grid>
             )}
             <Grid item>
-              <ErrorAlert
-                openErr={openErr}
-                errMessage={errMessage}
-                handleClose={handleErrMessageClose}
+              <AlertMessage
+                openAlert={openErr}
+                handleClose={handleCloseErrorMessage}
+                handleMessage={errMessage}
+                alertAttributes={{ severity: "error", color: "error" }}
               />
             </Grid>
           </Grid>

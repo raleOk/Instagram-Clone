@@ -6,8 +6,7 @@ import * as yup from "yup";
 import logo from "../../images/logo.png";
 import { verify, resend } from "../../api/api";
 import CircularProgress from "@mui/material/CircularProgress";
-import ErrorAlert from "../../components/Alerts/ErrorAlert";
-import SuccessAlert from "../../components/Alerts/SuccessAlert";
+import AlertMessage from "../../components/Alerts/AlertMessage";
 import { errorStyles } from "../../styles/styles";
 import { UserContext } from "../../context/userContext";
 
@@ -16,16 +15,20 @@ const Verify = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  //load state
   const [isLoading, setIsLoading] = useState(false);
 
+  //success message state and handlers
   const [openMessage, setOpenMessage] = useState(false);
-  const handleMessageClose = () => {
+
+  const handleCloseMessage = () => {
     setOpenMessage(false);
   };
 
+  //error message state and handlers
   const [openErr, setOpenErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
-  const handleErrMessageClose = () => {
+  const handleCloseErrorMessage = () => {
     setOpenErr(false);
   };
 
@@ -172,17 +175,19 @@ const Verify = () => {
               </>
             )}
             <Grid item>
-              <SuccessAlert
-                openMessage={openMessage}
-                handleClose={handleMessageClose}
-                successMessage="Verification code sent!"
+              <AlertMessage
+                openAlert={openMessage}
+                handleClose={handleCloseMessage}
+                handleMessage="Verification code sent!"
+                alertAttributes={{ severity: "success", color: "info" }}
               />
             </Grid>
             <Grid item>
-              <ErrorAlert
-                openErr={openErr}
-                errMessage={errMessage}
-                handleClose={handleErrMessageClose}
+              <AlertMessage
+                openAlert={openErr}
+                handleClose={handleCloseErrorMessage}
+                handleMessage={errMessage}
+                alertAttributes={{ severity: "error", color: "error" }}
               />
             </Grid>
           </Grid>

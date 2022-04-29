@@ -10,7 +10,7 @@ import PostUpload from "../../../components/FileUpload/PostUpload";
 import Loader from "../../../components/Loaders/Loader";
 import { errorStyles } from "../../../styles/styles";
 import { createPost } from "../../../api/api";
-import ErrorAlert from "../../../components/Alerts/ErrorAlert";
+import AlertMessage from "../../../components/Alerts/AlertMessage";
 
 const CreatePost = () => {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const CreatePost = () => {
   const [openErr, setOpenErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
 
-  const handleCloseErrMessage = () => {
+  const handleCloseErrorMessage = () => {
     setOpenErr(false);
   };
 
@@ -161,10 +161,11 @@ const CreatePost = () => {
       </Grid>
 
       <Grid item>
-        <ErrorAlert
-          openErr={openErr}
-          errMessage={errMessage}
-          handleClose={handleCloseErrMessage}
+        <AlertMessage
+          openAlert={openErr}
+          handleClose={handleCloseErrorMessage}
+          handleMessage={errMessage}
+          alertAttributes={{ severity: "error", color: "error" }}
         />
       </Grid>
     </Grid>
