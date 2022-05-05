@@ -17,6 +17,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ChatIcon from "@mui/icons-material/Chat";
 import DeleteModal from "../Modals/DeleteModal";
 import EditModal from "../Modals/EditModal";
 import { UserContext } from "../../context/userContext";
@@ -82,7 +83,6 @@ const PostCard = props => {
   };
 
   //edit/delete post handlers and callbacks
-
   const handleEditRender = editedItem => {
     const currentPosts = posts;
 
@@ -180,7 +180,9 @@ const PostCard = props => {
         }
         action={userContext.user._id === post.user._id ? postMenuButton : ""}
         title={post.user.username}
-        subheader={formatDate(post.createdAt)}
+        subheader={`Posted on: ${formatDate(post.createdAt)} ${
+          post.createdAt === post.updatedAt ? "(edited)" : ""
+        } `}
       />
       <CardActionArea>
         <CardMedia
@@ -195,9 +197,12 @@ const PostCard = props => {
           {post.caption}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
+      <CardActions>
         <IconButton>
           <FavoriteIcon />
+        </IconButton>
+        <IconButton>
+          <ChatIcon />
         </IconButton>
       </CardActions>
       {postMenu}
